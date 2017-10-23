@@ -6,3 +6,6 @@
 #   / /_/ / / /_/ /  __/ /_/ /_/  __/
 #  / .___/_/ .___/\___/\__/\__/\___/
 # /_/     /_/
+
+from .jobs import Job
+from .pipes import Pipe
