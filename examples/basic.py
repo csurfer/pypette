@@ -15,7 +15,7 @@
 import threading
 from time import sleep
 
-from pipette import Job, Pipe
+from pypette import Job, Pipe
 
 
 def ppr(x):

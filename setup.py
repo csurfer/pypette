@@ -14,7 +14,7 @@ with open(path.join(here, 'README.rst')) as f:
 
 # Get package and author details.
 about = {}
-with open(path.join(here, 'pipette', '__version__.py')) as f:
+with open(path.join(here, 'pypette', '__version__.py')) as f:
     exec(f.read(), about)
 
 setup(
