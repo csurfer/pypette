@@ -60,6 +60,32 @@ class Pipe(object):
         else:
             self._add_in_series(jobs)
 
+    def run(self):
+        """Method to run the pipeline."""
+        for jobset in self.job_map.values():
+            job_threads = []
+            # Create job threads
+            for job in jobset:
+                if isinstance(job, Job):
+                    job_threads.append(
+                        Thread(
+                            target=job.function,
+                            args=job.args,
+                            kwargs=job.kwargs))
+                else:
+                    job_threads.append(Thread(target=job.run))
+            # Start job threads
+            for job in job_threads:
+                job.start()
+            # Job main thread to create flow
+            for job in job_threads:
+                job.join()
+
+    def graph(self):
+        """Method to print the structure of the pipeline."""
+        self._pretty_print()
+        print('')
+
     @staticmethod
     def _validate(jobs):
         """Method to validate the jobs submitted to pipeline.
@@ -88,27 +114,6 @@ class Pipe(object):
         """
         for job in jobs:
             self.job_map[uuid4()] = [job]
-
-    def run(self):
-        """Method to run the pipeline."""
-        for jobset in self.job_map.values():
-            job_threads = []
-            # Create job threads
-            for job in jobset:
-                if isinstance(job, Job):
-                    job_threads.append(
-                        Thread(
-                            target=job.function,
-                            args=job.args,
-                            kwargs=job.kwargs))
-                else:
-                    job_threads.append(Thread(target=job.run))
-            # Start job threads
-            for job in job_threads:
-                job.start()
-            # Job main thread to create flow
-            for job in job_threads:
-                job.join()
 
     def _pretty_print(self):
         """Method to pretty print the pipeline."""
@@ -144,11 +149,6 @@ class Pipe(object):
 
         for item in pipes:
             item._pretty_print()
-
-    def graph(self):
-        """Method to print the structure of the pipeline."""
-        self._pretty_print()
-        print('')
 
     def __str__(self):
         self._pretty_print()
