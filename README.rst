@@ -1,38 +1,17 @@
-.. raw:: html
+|Logo|
 
-   <p align="center">
-       <img src="https://i.imgur.com/MBu5x0h.png" width="60%">
-   </p>
-
-.. raw:: html
-
-   <p align="center">
-       <a href="https://pypi.python.org/pypi/pypette">
-           <img src="https://img.shields.io/pypi/v/pypette.svg" alt="pypiv">
-       </a>
-       <a href="https://pypi.python.org/pypi/pypette">
-           <img src="https://img.shields.io/pypi/pyversions/pypette.svg" alt="pyv">
-       </a>
-       <a href="https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE">
-           <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
-       </a>
-       <a href="https://saythanks.io/to/csurfer">
-           <img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" alt="Thanks">
-       </a>
-   </p>
+|pypiv| |pyv| |Licence| |Thanks|
 
 --------------
 
-| pypette (to be read as pippette) is a module which makes building
-  pipelines
-| ridiculously simple allowing users to control the flow with minimal
-  instructions.
+pypette (to be read as pippette) is a module which makes building pipelines ridiculously
+simple allowing users to control the flow with minimal instructions.
 
 Features
 --------
 
--  Simple interface.
--  Ability to view pipeline structure within the comfort of terminal.
+* Simple interface.
+* Ability to view pipeline structure within the comfort of terminal.
 
 Setup
 -----
@@ -82,9 +61,8 @@ Basic unit of execution say a python method or callables.
 Pipe
 ~~~~
 
-| Structure to specify the flow in which the jobs needs to be executed.
-  The whole
-| interface consists of only 4 methods.
+Structure to specify the flow in which the jobs needs to be executed. The whole
+interface consists of only 4 methods.
 
 .. code:: python
 
@@ -106,18 +84,16 @@ Pipe
 Building complex pipelines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| Jobs submitted to pipeline should be callables i,e structures which
-  can be run.
-| This means python methods, lambdas etc qualify.
+Jobs submitted to pipeline should be callables i,e structures which can be run.
+This means python methods, lambdas etc qualify.
 
-| What about Pipe itself?
-| Ofcourse it is a callable and you can submit a pipe object to be run
-  along with
-| regular jobs. This way you can build small pipelines which achieve a
-  specific task
-| and then combine them to create more complex pipelines.
+What about Pipe itself?
 
-::
+Ofcourse it is a callable and you can submit a pipe object to be run along with
+regular jobs. This way you can build small pipelines which achieve a specific
+task and then combine them to create more complex pipelines.
+
+.. code:: python
 
     from pypette import Job, Pipe
 
@@ -149,31 +125,26 @@ Building complex pipelines
 Example pipeline
 ~~~~~~~~~~~~~~~~
 
-An example pipeline and its code is included in **`examples`_** folder.
+An example pipeline and its code is included in `examples`_ folder.
 
 Visualizing the pipeline using graph()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| Pipeline objects have a method called ``graph()`` which helps
-  visualize the pipeline within the comfort of your terminal. Graph is
-  recursive in nature and it visualizes everything that will
-| be run if we call ``run()`` on the pipe object.
+Pipeline objects have a method called ``graph()`` which helps visualize the
+pipeline within the comfort of your terminal. Graph is recursive in nature and
+it visualizes everything that will be run if we call ``run()`` on the pipe
+object.
 
 Visualizing the top level pipeline in `examples/basic.py`_ led to the
 following visualization.
 
-.. raw:: html
-
-   <p align="center">
-       <img src="https://i.imgur.com/e0CYIU5.png" width="200px">
-   </p>
+|Viz|
 
 Running the entire pipeline.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| The only thing you need to do at this point to run the entire pipeline
-  is to call
-| ``run()`` on your pipeline object.
+The only thing you need to do at this point to run the entire pipeline is to call
+``run()`` on your pipeline object.
 
 Contributing
 ------------
@@ -188,6 +159,7 @@ Development
 
 Pull requests are most welcome.
 
+
 Buy the developer a cup of coffee!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -195,9 +167,28 @@ If you found the utility helpful you can buy me a cup of coffee using
 
 |Donate|
 
-.. _examples: https://github.com/csurfer/pypette/tree/master/examples
-.. _examples/basic.py: https://github.com/csurfer/pypette/tree/master/examples/basic.py
-.. _issue tracker: https://github.com/csurfer/pypette/issues
+.. |Logo| image:: https://i.imgur.com/MBu5x0h.png
+   :width: 60%
+   :target: https://pypi.python.org/pypi/pypette
 
 .. |Donate| image:: https://www.paypalobjects.com/webstatic/en_US/i/btn/png/silver-pill-paypal-44px.png
    :target: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3BSBW7D45C4YN&lc=US&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
+
+.. |Thanks| image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg
+   :target: https://saythanks.io/to/csurfer
+
+.. _issue tracker: https://github.com/csurfer/pypette/issues
+.. _examples/basic.py: https://github.com/csurfer/pypette/examples/basic.py
+.. _examples: https://github.com/csurfer/pypette/examples
+
+.. |Viz| image:: https://i.imgur.com/e0CYIU5.png
+   :width: 200px
+
+.. |Licence| image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE
+
+.. |pypiv| image:: https://img.shields.io/pypi/v/pypette.svg
+   :target: https://pypi.python.org/pypi/pypette
+
+.. |pyv| image:: https://img.shields.io/pypi/pyversions/pypette.svg
+   :target: https://pypi.python.org/pypi/pypette

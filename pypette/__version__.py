@@ -8,7 +8,7 @@
 __title__ = 'pypette'
 __description__ = 'Package to make building pipelines ridiculously simple.'
 __url__ = 'https://github.com/csurfer/pypette'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = 'Vishwas B Sharma'
 __author_email__ = 'sharma.vishwas88@gmail.com'
 __license__ = 'MIT'

@@ -1,5 +1,7 @@
 <p align="center">
-    <img src="https://i.imgur.com/MBu5x0h.png" width="60%">
+    <a href="https://pypi.python.org/pypi/pypette">
+        <img src="https://i.imgur.com/MBu5x0h.png" width="60%">
+    </a>
 </p>
 
 <p align="center">
