@@ -2,3 +2,4 @@ pypette.egg-info/
 *.pyc
 examples/*.pyc
 pypette/*.pyc
+dist/
