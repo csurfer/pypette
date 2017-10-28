@@ -3,21 +3,27 @@
 """
 Example script to create basic pipeline of the form.
 
-    Pipe(p)
-    |
-    ---> print_job
-    |
-    ---> Pipe(p1)
-         |
-         ---> print_job
-         |
-         ---> Pipe(p2)
-              |
-              ---> print_job
-              |
-              ---> print_job
-              |
-              ---> print_job, print_job
+  Pipe(p)
+  |
+  ⇨  print_job
+  |
+  ⇨  Pipe(p1)
+      |
+      ⇨  print_job
+      |
+      ⇨ ------------------
+             ⇩         ⇩
+         print_job  Pipe(p2)
+                    |
+                    ⇨  print_job
+                    |
+                    ⇨  print_job
+                    |
+                    ⇨ ------------------
+                    |      ⇩          ⇩
+                    |  print_job  print_job
+                    |
+                    ⇨  print_job
 """
 
 import threading
@@ -37,25 +43,31 @@ def print_job(message):
 # Create pipeline p2
 p2 = Pipe('p2')
 p2.add_jobs([
-    Job(print_job, ('p2 1 series',)),
-    Job(print_job, ('p2 2 series',)),
+    Job(print_job, ('p2 1',)),
+    Job(print_job, ('p2 2',)),
 ])
 p2.add_jobs([
-    Job(print_job, ('p2 3 parallel',)),
-    Job(print_job, ('p2 4 parallel',)),
+    Job(print_job, ('p2 3.1',)),
+    Job(print_job, ('p2 3.2',)),
 ], run_in_parallel=True)
+p2.add_jobs([
+    Job(print_job, ('p2 4',)),
+])
 
 # Create pipeline p1
 p1 = Pipe('p1')
 p1.add_jobs([
-    Job(print_job, ('p1 1 series',)),
-    p2
+    Job(print_job, ('p1 1',)),
 ])
+p1.add_jobs([
+    Job(print_job, ('p1 2.1',)),
+    p2,
+], run_in_parallel=True)
 
 # Create pipeline p
 p = Pipe('p')
 p.add_jobs([
-    Job(print_job, ('top most',)),
+    Job(print_job, ('p 1',)),
     p1
 ])
 

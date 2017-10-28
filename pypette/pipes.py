@@ -119,10 +119,25 @@ class Pipe(object):
             print(crayons.red('No jobs added to the pipeline yet !'))
             return
 
-        for jobset in self.job_map.values():
-            print(crayons.blue('|'))
-            print(crayons.blue('---> ') +
-                  crayons.white(', '.join([job.name for job in jobset])))
+        joblen = len(self.job_map)
+        for i, jobs in enumerate(self.job_map.values()):
+            print(crayons.blue(u'| '))
+            if len(jobs) == 1:
+                print(crayons.blue(u'\u21E8  ') + crayons.white(jobs[0].name))
+            else:
+                if i == joblen - 1:
+                    pre = u'  '
+                else:
+                    pre = u'| '
+                l1 = [u'-' * (len(j.name) + 2) for j in jobs]
+                l1 = u''.join(l1)
+                l1 = l1[:-len(jobs[-1].name) // 2 + 1]
+                print(crayons.blue(u'\u21E8 ') + crayons.blue(l1))
+                fmt = u'{0:^{width}}'
+                l2 = [fmt.format(u'\u21E9', width=len(j.name) + 2) for j in jobs]
+                print(crayons.blue(pre) + crayons.blue(u''.join(l2)))
+                l3 = [fmt.format(j.name, width=len(j.name) + 2) for j in jobs]
+                print(crayons.blue(pre) + crayons.white(u''.join(l3)))
 
         pipes = filter(lambda x: isinstance(x, Pipe),
                        chain(*self.job_map.values()))
