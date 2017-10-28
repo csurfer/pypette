@@ -22,7 +22,7 @@
 ---
 
 pypette (to be read as pippette) is a module which makes building pipelines
-ridiculously simple allowing users to control the flow with minimal instructions.
+ridiculously simple, allowing users to control the flow with minimal instructions.
 
 ## Features
 
