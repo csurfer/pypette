@@ -84,12 +84,12 @@ interface consists of only 4 methods.
 Building complex pipelines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Jobs submitted to pipeline should be callables i,e structures which can be run.
+Jobs submitted to pipeline should be callables i.e. structures which can be run.
 This means python methods, lambdas etc qualify.
 
 What about Pipe itself?
 
-Ofcourse it is a callable and you can submit a pipe object to be run along with
+Of course it is a callable and you can submit a pipe object to be run along with
 regular jobs. This way you can build small pipelines which achieve a specific
 task and then combine them to create more complex pipelines.
 
