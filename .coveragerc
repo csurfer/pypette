@@ -1,0 +1,2 @@
+[report]
+omit = */pypette/__version__.py
