@@ -26,6 +26,11 @@ Example script to create basic pipeline of the form.
                     ⇨  print_job
 """
 
+__author__ = 'Vishwas B Sharma'
+__author_email__ = 'sharma.vishwas88@gmail.com'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2017 Vishwas B Sharma'
+
 import threading
 from time import sleep
 
