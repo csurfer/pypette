@@ -36,6 +36,7 @@ setup(
     # License
     license=about['__license__'],
     packages=[about['__title__']],
+    test_suite='tests',
     keywords='pipeline dev-tool threads multithreading python',
     classifiers=[
         # Intended Audience.

@@ -43,3 +43,11 @@ class Job(object):
 
     def __str__(self):
         return self.__repr__()
+
+    def __eq__(self, other):
+        """Method to check if two jobs are equal. Note that same method run with
+        two different sets of parameters is considered to be two different jobs
+        and not one job."""
+        return self.function == other.function and \
+            self.args == other.args and \
+            self.kwargs == other.kwargs
