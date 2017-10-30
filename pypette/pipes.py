@@ -7,7 +7,7 @@ Class definitions to create, validate and run jobs as pipelines.
 
 Description:
 
-`Job` is a basic unit of pipeline which does some work.
+`Job` is the basic unit of pipeline which does some work.
 `Pipe` is a structure which helps run the above jobs one after the other or in
 parallel. A pipe can be used to run jobs or other pipes.
 
@@ -15,6 +15,7 @@ Hence overtly complicated pipelines can be boiled down to the above two basic
 blocks.
 """
 
+import logging
 from collections import OrderedDict
 from itertools import chain
 from threading import Thread
@@ -62,6 +63,7 @@ class Pipe(object):
 
     def run(self):
         """Method to run the pipeline."""
+        logging.debug('run() method called on {}'.format(self.name))
         for jobset in self.job_map.values():
             job_threads = []
             # Create job threads
@@ -83,6 +85,7 @@ class Pipe(object):
 
     def graph(self):
         """Method to print the structure of the pipeline."""
+        logging.debug('graph() method called on {}'.format(self.name))
         self._pretty_print()
         print('')
 
@@ -94,8 +97,11 @@ class Pipe(object):
         :type jobs: list
         """
         for job in jobs:
-            validity = isinstance(job, Job) or isinstance(job, Pipe)
-            assert validity, 'Should be an instance of type Job or Pipe'
+            valid = isinstance(job, Job) or isinstance(job, Pipe)
+            if not valid:
+                logging.critical('Pipeline jobs should be of type Job or Pipe')
+                raise AssertionError(
+                    'Invalid type {} submitted'.format(type(job)))
 
     def _add_in_parallel(self, jobs):
         """Method to add jobs to pipeline so that they run in parallel.
@@ -104,6 +110,7 @@ class Pipe(object):
         :type jobs: list
         """
         self.job_map[uuid4()] = jobs
+        logging.debug('{} submitted to be run in parallel'.format(jobs))
 
     def _add_in_series(self, jobs):
         """Method to add jobs to pipeline so that they run one after another,
@@ -114,6 +121,7 @@ class Pipe(object):
         """
         for job in jobs:
             self.job_map[uuid4()] = [job]
+            logging.debug('{} submitted to be run in series'.format(job))
 
     def _pretty_print(self):
         """Method to pretty print the pipeline."""
