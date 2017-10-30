@@ -1,6 +1,13 @@
 Release History
 ---------------
 
+v0.0.5 (2017-10-30)
+-------------------
+
+**Bugfixes**
+
+* Continuous build deprecated test fixes.
+
 v0.0.4 (2017-10-30)
 -------------------
 
