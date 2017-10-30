@@ -52,12 +52,12 @@ class PipeTest(unittest.TestCase):
         p = Pipe('test')
 
         # Validate a new pipe contains no jobs by default.
-        self.assertEquals([], p.job_map.values())
+        self.assertEqual([], p.job_map.values())
 
         # Validate empty job list does nothing but doesn't throw an error
         # either.
         p.add_jobs([])
-        self.assertEquals([], p.job_map.values())
+        self.assertEqual([], p.job_map.values())
 
         # Validate the structure of the jobs submittted.
         p.add_jobs([j1, j2])
