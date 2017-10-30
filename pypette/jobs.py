@@ -34,3 +34,12 @@ class Job(object):
         self.args = args
         self.kwargs = kwargs
         self.name = function.__name__
+
+    def __repr__(self):
+        return 'Job(function={}, args={}, kwargs={})'.format(
+            self.name,
+            self.args,
+            self.kwargs)
+
+    def __str__(self):
+        return self.__repr__()

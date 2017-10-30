@@ -150,8 +150,8 @@ class Pipe(object):
         for item in pipes:
             item._pretty_print()
 
-    def __str__(self):
-        self._pretty_print()
-
     def __repr__(self):
         return self.name
+
+    def __str__(self):
+        return self.__repr__()
