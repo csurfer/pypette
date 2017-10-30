@@ -4,14 +4,15 @@
 
 --------------
 
-pypette (to be read as pippette) is a module which makes building pipelines ridiculously
-simple, allowing users to control the flow with minimal instructions.
+pypette (to be read as pipette) is a module which makes building pipelines
+ridiculously simple, allowing users to control the flow with minimal
+instructions.
 
 Features
 --------
 
 * Simple interface.
-* Ability to view pipeline structure within the comfort of terminal.
+* Ability to view pipeline structure within the comfort of a terminal.
 
 Setup
 -----
@@ -37,7 +38,7 @@ Structures
 Job
 ~~~
 
-Basic unit of execution say a python method or callables.
+The basic unit of execution, say a python method or a callable.
 
 .. code:: python
 
@@ -61,7 +62,7 @@ Basic unit of execution say a python method or callables.
 Pipe
 ~~~~
 
-Structure to specify the flow in which the jobs needs to be executed. The whole
+Structure to specify the flow in which the jobs need to be executed. The whole
 interface consists of only 4 methods.
 
 .. code:: python
@@ -73,25 +74,25 @@ interface consists of only 4 methods.
 
     # 2. Add jobs to execute. (Assuming job_list is a list of jobs)
 
-    # To run the jobs in job_list in order one after the other where each job waits
-    # for the job before it to finish.
+    # To run the jobs in job_list in order one after the other where each job
+    # waits for the job before it to finish.
     p.add_jobs(job_list)
 
-    # To run the jobs in job_list parallelly and run the next step only after all
-    # jobs in job list finish.
+    # To run the jobs in job_list parallelly and run the next step only after
+    # all jobs in job list finish.
     p.add_jobs(job_list, run_in_parallel=True)
 
 Building complex pipelines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Jobs submitted to pipeline should be callables i,e structures which can be run.
-This means python methods, lambdas etc qualify.
+Jobs submitted to pipeline should be callables i.e. structures which can be
+run. This means python methods, lambdas etc qualify.
 
 What about Pipe itself?
 
-Ofcourse it is a callable and you can submit a pipe object to be run along with
-regular jobs. This way you can build small pipelines which achieve a specific
-task and then combine them to create more complex pipelines.
+Of course, it is a callable and you can submit a pipe object to be run along
+with regular jobs. This way you can build small pipelines which achieve a
+specific task and then combine them to create more complex pipelines.
 
 .. code:: python
 
@@ -125,17 +126,17 @@ task and then combine them to create more complex pipelines.
 Example pipeline
 ~~~~~~~~~~~~~~~~
 
-An example pipeline and its code is included in `examples`_ folder.
+An example pipeline and its code are included in `examples`_ folder.
 
 Visualizing the pipeline using graph()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pipeline objects have a method called ``graph()`` which helps visualize the
-pipeline within the comfort of your terminal. Graph is recursive in nature and
-it visualizes everything that will be run if we call ``run()`` on the pipe
+pipeline within the comfort of your terminal. The graph is recursive in nature
+and it visualizes everything that will be run if we call ``run()`` on the pipe
 object.
 
-Visualizing the top level pipeline in `examples/basic.py`_ led to the
+Visualizing the top-level pipeline in `examples/basic.py`_ led to the
 following visualization.
 
 |Viz|
@@ -143,8 +144,8 @@ following visualization.
 Running the entire pipeline.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The only thing you need to do at this point to run the entire pipeline is to call
-``run()`` on your pipeline object.
+The only thing you need to do at this point to run the entire pipeline is to
+call ``run()`` on your pipeline object.
 
 Contributing
 ------------

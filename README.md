@@ -9,25 +9,32 @@
         <img src="https://img.shields.io/pypi/v/pypette.svg" alt="pypiv">
     </a>
     <a href="https://pypi.python.org/pypi/pypette">
-        <img src="https://img.shields.io/pypi/pyversions/pypette.svg" alt="pyv">
+        <img
+            src="https://img.shields.io/pypi/pyversions/pypette.svg"
+            alt="pyv">
     </a>
     <a href="https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE">
-        <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+        <img
+            src="https://img.shields.io/badge/license-MIT-blue.svg"
+            alt="License">
     </a>
     <a href="https://saythanks.io/to/csurfer">
-        <img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" alt="Thanks">
+        <img
+            src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg"
+            alt="Thanks">
     </a>
 </p>
 
 ---
 
-pypette (to be read as pippette) is a module which makes building pipelines
-ridiculously simple, allowing users to control the flow with minimal instructions.
+pypette (to be read as pipette) is a module which makes building pipelines
+ridiculously simple, allowing users to control the flow with minimal
+instructions.
 
 ## Features
 
 - Simple interface.
-- Ability to view pipeline structure within the comfort of terminal.
+- Ability to view pipeline structure within the comfort of a terminal.
 
 ## Setup
 
@@ -48,7 +55,7 @@ python pypette/setup.py install
 
 ### Job
 
-Basic unit of execution say a python method or callables.
+The basic unit of execution, say a python method or a callable.
 
 ```python
 from pypette import Job
@@ -71,7 +78,7 @@ j3 = Job(print_hello_msg, kwargs={"msg":"pypette is simple"})
 
 ### Pipe
 
-Structure to specify the flow in which the jobs needs to be executed. The whole
+Structure to specify the flow in which the jobs need to be executed. The whole
 interface consists of only 4 methods.
 
 ```python
@@ -93,15 +100,16 @@ p.add_jobs(job_list, run_in_parallel=True)
 
 ### Building complex pipelines
 
-Jobs submitted to pipeline should be callables i,e structures which can be run.
+Jobs submitted to pipeline should be callables i.e. structures which can be run.
 This means python methods, lambdas etc qualify.
 
 What about Pipe itself?
-Ofcourse it is a callable and you can submit a pipe object to be run along with
-regular jobs. This way you can build small pipelines which achieve a specific task
-and then combine them to create more complex pipelines.
 
-```
+Of course, it is a callable and you can submit a pipe object to be run along
+with regular jobs. This way you can build small pipelines which achieve a
+specific task and then combine them to create more complex pipelines.
+
+```python
 from pypette import Job, Pipe
 
 def welcome():
@@ -132,14 +140,19 @@ p2.run() # This first runs welcome, then runs p1 pipeline then runs goodbye.
 
 ### Example pipeline
 
-An example pipeline and its code is included in **[examples](https://github.com/csurfer/pypette/tree/master/examples)** folder.
+An example pipeline and its code are included in
+**[examples](https://github.com/csurfer/pypette/tree/master/examples)** folder.
 
 ### Visualizing the pipeline using graph()
 
-Pipeline objects have a method called `graph()` which helps visualize the pipeline within the comfort of your terminal. Graph is recursive in nature and it visualizes everything that will
-be run if we call `run()` on the pipe object.
+Pipeline objects have a method called `graph()` which helps visualize the
+pipeline within the comfort of your terminal. The graph is recursive in nature
+and it visualizes everything that will be run if we call `run()` on the pipe
+object.
 
-Visualizing the top level pipeline in [examples/basic.py](https://github.com/csurfer/pypette/tree/master/examples/basic.py) led to the following visualization.
+Visualizing the top-level pipeline in
+[examples/basic.py](https://github.com/csurfer/pypette/tree/master/examples/basic.py)
+led to the following visualization.
 
 <p align="center">
     <img src="https://i.imgur.com/e0CYIU5.png" width="200px">
@@ -154,7 +167,8 @@ The only thing you need to do at this point to run the entire pipeline is to cal
 
 ### Bug Reports and Feature Requests
 
-Please use [issue tracker](https://github.com/csurfer/pypette/issues) for reporting bugs or feature requests.
+Please use [issue tracker](https://github.com/csurfer/pypette/issues) for
+reporting bugs or feature requests.
 
 ### Development
 
