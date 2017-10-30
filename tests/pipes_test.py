@@ -33,6 +33,12 @@ class PipeTest(unittest.TestCase):
         except AssertionError:
             self.fail("Submit validation raised AssertionError unexpectedly!")
 
+        # Validate wrong types of input raise AssertionError.
+        with self.assertRaises(AssertionError):
+            Pipe._validate([1])
+        with self.assertRaises(AssertionError):
+            Pipe._validate(['test_string'])
+
     def test_basic_flow(self):
         """Validates the flow created due to submission of jobs to pipeline."""
         def dummy1():
@@ -45,6 +51,15 @@ class PipeTest(unittest.TestCase):
         j2 = Job(dummy2)
         p = Pipe('test')
 
+        # Validate a new pipe contains no jobs by default.
+        self.assertEquals([], p.job_map.values())
+
+        # Validate empty job list does nothing but doesn't throw an error
+        # either.
+        p.add_jobs([])
+        self.assertEquals([], p.job_map.values())
+
+        # Validate the structure of the jobs submittted.
         p.add_jobs([j1, j2])
         p.add_jobs([j2, j1])
         p.add_jobs([j1, j2], True)
