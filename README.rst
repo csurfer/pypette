@@ -1,6 +1,6 @@
 |Logo|
 
-|pypiv| |pyv| |Licence| |Thanks|
+|pypiv| |pyv| |Build| |Coverage| |Licence| |Thanks|
 
 --------------
 
@@ -187,6 +187,12 @@ If you found the utility helpful you can buy me a cup of coffee using
 
 .. |Licence| image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE
+
+.. |Build| image:: https://travis-ci.org/csurfer/pypette.svg?branch=master
+   :target: https://travis-ci.org/csurfer/pypette
+
+.. |Coverage| image:: https://coveralls.io/repos/github/csurfer/pypette/badge.svg?branch=master
+   :target: https://coveralls.io/github/csurfer/pypette?branch=master
 
 .. |pypiv| image:: https://img.shields.io/pypi/v/pypette.svg
    :target: https://pypi.python.org/pypi/pypette

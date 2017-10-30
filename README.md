@@ -13,6 +13,16 @@
             src="https://img.shields.io/pypi/pyversions/pypette.svg"
             alt="pyv">
     </a>
+    <a href="https://travis-ci.org/csurfer/pypette">
+        <img
+            src="https://travis-ci.org/csurfer/pypette.svg?branch=master"
+            alt="Build Status">
+    </a>
+    <a href="https://coveralls.io/github/csurfer/pypette?branch=master">
+        <img
+            src="https://coveralls.io/repos/github/csurfer/pypette/badge.svg?branch=master"
+            alt="Coverage Status">
+    </a>
     <a href="https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE">
         <img
             src="https://img.shields.io/badge/license-MIT-blue.svg"
