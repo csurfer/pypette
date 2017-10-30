@@ -1,6 +1,15 @@
 Release History
 ---------------
 
+v0.0.4 (2017-10-30)
+-------------------
+
+**Improvement**
+
+* Test coverage.
+* Continuous build integration with Travis.
+* Continuous coverage integration with Coveralls.
+
 v0.0.3 (2017-10-30)
 -------------------
 * Inclusion of ``logging``.
