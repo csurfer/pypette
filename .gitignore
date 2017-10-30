@@ -4,3 +4,4 @@ examples/*.pyc
 pypette/*.pyc
 dist/
 *.egg
+*.egg-info/
