@@ -1,6 +1,13 @@
 Release History
 ---------------
 
+Ongoing
+-------
+
+**Bugfixes**
+
+* BashJob doesn't wait till thread is run. Fix with lambda.
+
 v0.0.6 (2017-10-31)
 -------------------
 

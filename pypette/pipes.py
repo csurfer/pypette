@@ -97,7 +97,8 @@ class Pipe(object):
                 args=job.args,
                 kwargs=job.kwargs)
         elif isinstance(job, BashJob):
-            return Thread(target=subprocess.Popen(job.cmd).wait())
+            # Note that without lambda, subprocess.Popen runs immediately.
+            return Thread(target=lambda: subprocess.Popen(job.cmd).wait())
         else:
             return Thread(target=job.run)
 
