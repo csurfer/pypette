@@ -59,6 +59,18 @@ The basic unit of execution, say a python method or a callable.
     # Job with arguments specified as key word arguments
     j3 = Job(print_hello_msg, kwargs={"msg":"pypette is simple"})
 
+BashJob
+~~~~~~~
+
+The basic unit of execution, which runs a bash command.
+
+.. code:: python
+
+    from pypette import BashJob
+
+    b1 = BashJob(['ls', '-l'])
+    b2 = BashJob(['pwd'])
+
 Pipe
 ~~~~
 
@@ -72,7 +84,7 @@ interface consists of only 4 methods.
     # 1. Create a new Pipe
     p = Pipe('TestPipe')
 
-    # 2. Add jobs to execute. (Assuming job_list is a list of jobs)
+    # 2. Add jobs to execute. (Assuming job_list is a list of python/bash jobs)
 
     # To run the jobs in job_list in order one after the other where each job
     # waits for the job before it to finish.
@@ -119,6 +131,8 @@ specific task and then combine them to create more complex pipelines.
         Job(welcome),
         p1,
         Job(goodbye),
+        BashJob(['ls', '-l']),
+        BashJob(['pwd'])
     ])
 
     p2.run() # This first runs welcome, then runs p1 pipeline then runs goodbye.

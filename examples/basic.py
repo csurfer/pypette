@@ -8,22 +8,26 @@ Example script to create basic pipeline of the form.
   ⇨  print_job
   |
   ⇨  Pipe(p1)
-      |
-      ⇨  print_job
-      |
-      ⇨ ------------------
-             ⇩         ⇩
-         print_job  Pipe(p2)
-                    |
-                    ⇨  print_job
-                    |
-                    ⇨  print_job
-                    |
-                    ⇨ ------------------
-                    |      ⇩          ⇩
-                    |  print_job  print_job
-                    |
-                    ⇨  print_job
+  |   |
+  |   ⇨  print_job
+  |   |
+  |   ⇨ ------------------
+  |          ⇩         ⇩
+  |      print_job  Pipe(p2)
+  |                 |
+  |                 ⇨  print_job
+  |                 |
+  |                 ⇨  print_job
+  |                 |
+  |                 ⇨ ------------------
+  |                 |      ⇩          ⇩
+  |                 |  print_job  print_job
+  |                 |
+  |                 ⇨  print_job
+  |
+  ⇨  ls -l
+  |
+  ⇨  pwd
 """
 
 __author__ = 'Vishwas B Sharma'
@@ -34,7 +38,7 @@ __copyright__ = 'Copyright 2017 Vishwas B Sharma'
 import threading
 from time import sleep
 
-from pypette import Job, Pipe
+from pypette import BashJob, Job, Pipe
 
 
 def print_job(message):
@@ -73,7 +77,9 @@ p1.add_jobs([
 p = Pipe('p')
 p.add_jobs([
     Job(print_job, ('p 1',)),
-    p1
+    p1,
+    BashJob(['ls', '-l']),
+    BashJob(['pwd'])
 ])
 
 # Display the structure of the pipeline to be run.

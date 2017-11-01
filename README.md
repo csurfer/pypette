@@ -86,6 +86,17 @@ j2 = Job(print_hello_msg, args=("pypette is simple",))
 j3 = Job(print_hello_msg, kwargs={"msg":"pypette is simple"})
 ```
 
+### BashJob
+
+The basic unit of execution, which runs a bash command.
+
+```python
+from pypette import BashJob
+
+b1 = BashJob(['ls', '-l'])
+b2 = BashJob(['pwd'])
+```
+
 ### Pipe
 
 Structure to specify the flow in which the jobs need to be executed. The whole
@@ -97,7 +108,7 @@ from pypette import Pipe
 # 1. Create a new Pipe
 p = Pipe('TestPipe')
 
-# 2. Add jobs to execute. (Assuming job_list is a list of jobs)
+# 2. Add jobs to execute. (Assuming job_list is a list of python/bash jobs)
 
 # To run the jobs in job_list in order one after the other where each job waits
 # for the job before it to finish.
@@ -143,6 +154,8 @@ p2.add_jobs([
     Job(welcome),
     p1,
     Job(goodbye),
+    BashJob(['ls', '-l']),
+    BashJob(['pwd'])
 ])
 
 p2.run() # This first runs welcome, then runs p1 pipeline then runs goodbye.

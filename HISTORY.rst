@@ -1,6 +1,13 @@
 Release History
 ---------------
 
+Ongoing
+-------
+
+**Improvement**
+
+* Support for bash commands using BashJob included.
+
 v0.0.5 (2017-10-30)
 -------------------
 
