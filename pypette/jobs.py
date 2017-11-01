@@ -14,15 +14,30 @@ describe python methods in a structured way.
 from types import FunctionType
 
 
-class Job(object):
+class JobInterface(object):
+    """Pipeline job interface."""
+
+    def __init__(self, name):
+        """Constructor.
+
+        :param name: Name of job.
+        :type name: str
+        """
+        self.name = name
+
+
+class Job(JobInterface):
     """Class to format python methods as pipeline jobs."""
 
     def __init__(self, function, args=(), kwargs={}):
         """Constructor.
 
         :param function: Python method to run.
+        :type function: function
         :param args: Argument list to run the method with.
+        :type args: tuple
         :param kwargs: Keyword arguments to run the method with.
+        :type kwargs: dict
         """
 
         # Validate the structure of the job submitted.
@@ -30,10 +45,10 @@ class Job(object):
         assert isinstance(args, tuple)
         assert isinstance(kwargs, dict)
 
+        super(Job, self).__init__(function.__name__)
         self.function = function
         self.args = args
         self.kwargs = kwargs
-        self.name = function.__name__
 
     def __repr__(self):
         return 'Job(function={}, args={}, kwargs={})'.format(
@@ -45,9 +60,34 @@ class Job(object):
         return self.__repr__()
 
     def __eq__(self, other):
-        """Method to check if two jobs are equal. Note that same method run with
-        two different sets of parameters is considered to be two different jobs
-        and not one job."""
+        # Note that same method run with two different sets of parameters is
+        # considered to be two different jobs and not one job.
         return self.function == other.function and \
             self.args == other.args and \
             self.kwargs == other.kwargs
+
+
+class BashJob(JobInterface):
+    """Class to format bash commands as pipeline jobs."""
+
+    def __init__(self, cmd):
+        """Constructor.
+
+        :param cmd: Bash command to run.
+        :type cmd: list
+        """
+
+        # Validate the structure of the job submitted.
+        assert isinstance(cmd, list), 'Bash command as list of strings needed'
+
+        super(BashJob, self).__init__(' '.join(cmd))
+        self.cmd = cmd
+
+    def __repr__(self):
+        return 'BashJob(cmd={})'.format(self.name)
+
+    def __str__(self):
+        return self.__repr__()
+
+    def __eq__(self, other):
+        return self.cmd == other.cmd

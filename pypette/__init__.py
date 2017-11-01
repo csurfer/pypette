@@ -7,5 +7,5 @@
 #  / .___/\__, / .___/\___/\__/\__/\___/
 # /_/    /____/_/
 
-from .jobs import Job
+from .jobs import BashJob, Job
 from .pipes import Pipe

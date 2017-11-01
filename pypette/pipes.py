@@ -16,6 +16,7 @@ blocks.
 """
 
 import logging
+import subprocess
 from collections import OrderedDict
 from itertools import chain
 from threading import Thread
@@ -23,7 +24,7 @@ from uuid import uuid4
 
 import crayons
 
-from .jobs import Job
+from .jobs import BashJob, Job, JobInterface
 
 
 class Pipe(object):
@@ -33,6 +34,7 @@ class Pipe(object):
         """Constructor.
 
         :param name: Name given to the pipe object for identification.
+        :type name: str
         """
         self.name = 'Pipe({})'.format(name)
         self.job_map = OrderedDict()
@@ -68,14 +70,7 @@ class Pipe(object):
             job_threads = []
             # Create job threads
             for job in jobset:
-                if isinstance(job, Job):
-                    job_threads.append(
-                        Thread(
-                            target=job.function,
-                            args=job.args,
-                            kwargs=job.kwargs))
-                else:
-                    job_threads.append(Thread(target=job.run))
+                job_threads.append(Pipe._create_thread_for(job))
             # Start job threads
             for job in job_threads:
                 job.start()
@@ -90,6 +85,23 @@ class Pipe(object):
         print('')
 
     @staticmethod
+    def _create_thread_for(job):
+        """Method to create thread to run the job in.
+
+        :param job: Pipeline job to run.
+        :type job: Job or BashJob or Pipe
+        """
+        if isinstance(job, Job):
+            return Thread(
+                target=job.function,
+                args=job.args,
+                kwargs=job.kwargs)
+        elif isinstance(job, BashJob):
+            return Thread(target=subprocess.Popen(job.cmd).wait())
+        else:
+            return Thread(target=job.run)
+
+    @staticmethod
     def _validate(jobs):
         """Method to validate the jobs submitted to pipeline.
 
@@ -97,9 +109,10 @@ class Pipe(object):
         :type jobs: list
         """
         for job in jobs:
-            valid = isinstance(job, Job) or isinstance(job, Pipe)
+            valid = isinstance(job, JobInterface) or isinstance(job, Pipe)
             if not valid:
-                logging.critical('Pipeline jobs should be of type Job or Pipe')
+                logging.error('Pipeline jobs should be of type Job or' +
+                              ' BashJob or Pipe')
                 raise AssertionError(
                     'Invalid type {} submitted'.format(type(job)))
 
