@@ -11,10 +11,12 @@ Usage from git root:
 
 import unittest
 
-from pypette import Job
+from pypette import BashJob, Job
 
 
 class JobTest(unittest.TestCase):
+    """Unit tests Job class."""
+
     def test_default_args(self):
         """Validates the default arguments set for jobs."""
         def dummy():
@@ -84,6 +86,41 @@ class JobTest(unittest.TestCase):
         self.assertNotEqual(
             Job(dummy, kwargs={'msg': 'a'}),
             Job(dummy, kwargs={'msg': 'b'}))
+
+
+class BashJobTest(unittest.TestCase):
+    """Unit tests BashJob"""
+
+    def test_function_validation(self):
+        """Tests the function validation mechanism."""
+        with self.assertRaises(AssertionError):
+            Job(1)
+        with self.assertRaises(AssertionError):
+            Job("test")
+
+    def test_string_representation(self):
+        """Tests printable representation of BashJobs."""
+        self.assertEqual(
+            'BashJob(cmd=ls -l)',
+            BashJob(['ls', '-l']).__repr__(),
+            'BashJob representation not as expected')
+
+        self.assertEqual(
+            'BashJob(cmd=pwd)',
+            BashJob(['pwd']).__repr__(),
+            'BashJob representation not as expected')
+
+    def test_equality(self):
+        """Validates equality of bash jobs."""
+        self.assertEqual(
+            BashJob(['ls']),
+            BashJob(['ls']))
+        self.assertEqual(
+            BashJob(['ls -l']),
+            BashJob(['ls -l']))
+        self.assertNotEqual(
+            BashJob(['pwd']),
+            BashJob(['ls']))
 
 
 if __name__ == '__main__':

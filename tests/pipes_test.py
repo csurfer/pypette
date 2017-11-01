@@ -9,9 +9,12 @@ Usage from git root:
     >>> python setup.py test
 """
 
+import logging
 import unittest
 
-from pypette import Job, Pipe
+from pypette import BashJob, Job, Pipe
+
+logging.basicConfig(level=logging.CRITICAL)
 
 
 class PipeTest(unittest.TestCase):
@@ -21,15 +24,18 @@ class PipeTest(unittest.TestCase):
             pass
 
         job = Job(dummy)
+        bashjob = BashJob(['ls'])
         pipe = Pipe('dummy')
 
         try:
             # Validate job object list is valid list to submit.
             Pipe._validate([job])
+            # Validate bash job object list is valid list to submit.
+            Pipe._validate([bashjob])
             # Validate pipe object list is valid list to submit.
             Pipe._validate([pipe])
             # Validate lists including both are valid list to submit.
-            Pipe._validate([job, pipe])
+            Pipe._validate([job, bashjob, pipe])
         except AssertionError:
             self.fail("Submit validation raised AssertionError unexpectedly!")
 
@@ -41,14 +47,11 @@ class PipeTest(unittest.TestCase):
 
     def test_basic_flow(self):
         """Validates the flow created due to submission of jobs to pipeline."""
-        def dummy1():
+        def dummy():
             pass
 
-        def dummy2():
-            pass
-
-        j1 = Job(dummy1)
-        j2 = Job(dummy2)
+        j1 = Job(dummy)
+        b1 = BashJob(['ls'])
         p = Pipe('test')
 
         # Validate a new pipe contains no jobs by default.
@@ -60,18 +63,18 @@ class PipeTest(unittest.TestCase):
         self.assertEqual([], list(p.job_map.values()))
 
         # Validate the structure of the jobs submittted.
-        p.add_jobs([j1, j2])
-        p.add_jobs([j2, j1])
-        p.add_jobs([j1, j2], True)
-        p.add_jobs([j2, j1], True)
+        p.add_jobs([j1, b1])
+        p.add_jobs([b1, j1])
+        p.add_jobs([j1, b1], True)
+        p.add_jobs([b1, j1], True)
 
         expected = [
             [j1],
-            [j2],
-            [j2],
+            [b1],
+            [b1],
             [j1],
-            [j1, j2],
-            [j2, j1]
+            [j1, b1],
+            [b1, j1]
         ]
 
         for (a, b) in zip(p.job_map.values(), expected):
