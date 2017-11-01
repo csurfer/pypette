@@ -18,9 +18,9 @@
             src="https://travis-ci.org/csurfer/pypette.svg?branch=master"
             alt="Build Status">
     </a>
-    <a href="https://coveralls.io/github/csurfer/pypette?branch=master">
+    <a href="https://coveralls.io/github/csurfer/pypette">
         <img
-            src="https://coveralls.io/repos/github/csurfer/pypette/badge.svg?branch=master"
+            src="https://coveralls.io/repos/github/csurfer/pypette/badge.svg"
             alt="Coverage Status">
     </a>
     <a href="https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE">
