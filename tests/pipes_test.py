@@ -11,6 +11,7 @@ Usage from git root:
 
 import logging
 import unittest
+from threading import Thread
 
 from pypette import BashJob, Job, Pipe
 
@@ -85,38 +86,30 @@ class PipeTest(unittest.TestCase):
 
     def test_create_thread_for(self):
         """Tests creation of threads for various jobs."""
-        def dummy(msg):
-            pass
 
         # Validate thread creation for python callable.
+        def dummy(msg):
+            pass
         t = Pipe._create_thread_for(Job(dummy, args=('a',)))
         self.assertEqual(
-            t._Thread__target,
-            dummy,
-            'Thread target function is not as expected for Job')
-        self.assertEqual(
-            t._Thread__args,
-            ('a',),
-            'Thread arguments not as expected for Job')
-        self.assertEqual(
-            t._Thread__kwargs,
-            {},
-            'Thread kwargs not as expected for Job')
+            type(t),
+            Thread,
+            'Thread for Job created successfully')
 
         # Validate thread creation for Pipe object.
         p = Pipe('test')
         t = Pipe._create_thread_for(p)
         self.assertEqual(
-            t._Thread__target,
-            p.run,
-            'Thread target function is not as expected for Pipe')
+            type(t),
+            Thread,
+            'Thread for Pipe created successfully')
 
         # Validate thread creation for bash job.
         t = Pipe._create_thread_for(BashJob(['ls']))
         self.assertEqual(
-            t._Thread__target.__name__,
-            '<lambda>',
-            'Thread target function is not as expected for BashJob')
+            type(t),
+            Thread,
+            'Thread for BashJob created successfully')
 
 
 if __name__ == '__main__':
