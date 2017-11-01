@@ -93,6 +93,7 @@ The basic unit of execution, which runs a bash command.
 ```python
 from pypette import BashJob
 
+# Job with bash commands
 b1 = BashJob(['ls', '-l'])
 b2 = BashJob(['pwd'])
 ```
