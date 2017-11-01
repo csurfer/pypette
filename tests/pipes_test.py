@@ -111,6 +111,43 @@ class PipeTest(unittest.TestCase):
             Thread,
             'Thread for BashJob created successfully')
 
+    def test_representative_name(self):
+        """Validates the name for pipeline."""
+        p = Pipe('test')
+        self.assertEqual(
+            'Pipe(test)',
+            p.__repr__(),
+            'Pipe name not as expected')
+        self.assertEqual(
+            'Pipe(test)',
+            p.__str__(),
+            'Pipe name not as expected')
+
+    def test_graph(self):
+        """Validates graph call on pipelines."""
+        p = Pipe('test')
+
+        # Validate graph call on empty pipe.
+        try:
+            p.graph()
+        except Exception:
+            self.fail('graph() on empty pipe should not throw any exception')
+
+        # Validate graph on a pipe with jobs.
+        def dummy():
+            pass
+        p1 = Pipe('test1')
+        p1.add_jobs([Job(dummy)])
+        p.add_jobs([
+            p1,
+            BashJob(['ls'])
+        ])
+
+        try:
+            p.graph()
+        except Exception:
+            self.fail('graph() should not throw any exception')
+
 
 if __name__ == '__main__':
     unittest.main()
