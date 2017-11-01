@@ -136,12 +136,22 @@ class PipeTest(unittest.TestCase):
         # Validate graph on a pipe with jobs.
         def dummy():
             pass
+
+        def dummy1():
+            pass
+
         p1 = Pipe('test1')
         p1.add_jobs([Job(dummy)])
+        p1.add_jobs([
+            Job(dummy),
+            Job(dummy1),
+        ], run_in_parallel=True)
+        p.add_jobs([p1])
         p.add_jobs([
-            p1,
-            BashJob(['ls'])
-        ])
+            Job(dummy),
+            Job(dummy1),
+        ], run_in_parallel=True)
+        p.add_jobs([BashJob(['ls'])])
 
         try:
             p.graph()
