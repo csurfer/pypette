@@ -158,6 +158,26 @@ class PipeTest(unittest.TestCase):
         except Exception:
             self.fail('graph() should not throw any exception')
 
+    def test_run(self):
+        """Validates run call on pipelines."""
+        p = Pipe('test')
+
+        # Validate run call on empty pipe.
+        try:
+            p.run()
+        except Exception:
+            self.fail('run() on empty pipe should not throw any exception')
+
+        def dummy():
+            pass
+
+        p.add_jobs([Job(dummy), BashJob(['pwd'])])
+
+        try:
+            p.run()
+        except Exception:
+            self.fail('run() should not throw any exception')
+
 
 if __name__ == '__main__':
     unittest.main()
