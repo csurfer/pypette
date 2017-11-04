@@ -18,10 +18,10 @@
             src="https://travis-ci.org/csurfer/pypette.svg?branch=master"
             alt="Build Status">
     </a>
-    <a href="https://coveralls.io/github/csurfer/pypette">
+    <a href='https://coveralls.io/github/csurfer/pypette?branch=master'>
         <img
-            src="https://coveralls.io/repos/github/csurfer/pypette/badge.svg"
-            alt="Coverage Status">
+            src='https://coveralls.io/repos/github/csurfer/pypette/badge.svg?branch=master'
+            alt='Coverage Status' />
     </a>
     <a href="https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE">
         <img

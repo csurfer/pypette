@@ -206,8 +206,8 @@ If you found the utility helpful you can buy me a cup of coffee using
 .. |Build| image:: https://travis-ci.org/csurfer/pypette.svg?branch=master
    :target: https://travis-ci.org/csurfer/pypette
 
-.. |Coverage| image:: https://coveralls.io/repos/github/csurfer/pypette/badge.svg
-   :target: https://coveralls.io/github/csurfer/pypette
+.. |Coverage| image:: https://coveralls.io/repos/github/csurfer/pypette/badge.svg?branch=master
+   :target: https://coveralls.io/github/csurfer/pypette?branch=master
 
 .. |pypiv| image:: https://img.shields.io/pypi/v/pypette.svg
    :target: https://pypi.python.org/pypi/pypette
