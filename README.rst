@@ -109,7 +109,7 @@ specific task and then combine them to create more complex pipelines.
 
 .. code:: python
 
-    from pypette import Job, Pipe
+    from pypette import BashJob, Job, Pipe
 
     def welcome():
         print("Welcome user!")

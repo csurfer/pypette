@@ -132,7 +132,7 @@ with regular jobs. This way you can build small pipelines which achieve a
 specific task and then combine them to create more complex pipelines.
 
 ```python
-from pypette import Job, Pipe
+from pypette import BashJob, Job, Pipe
 
 def welcome():
     print("Welcome user!")
