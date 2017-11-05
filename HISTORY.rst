@@ -1,6 +1,13 @@
 Release History
 ---------------
 
+Ongoing
+-------
+
+**Improvement**
+
+* Increasing the test coverage by adding basic tests for run().
+
 v0.0.7 (2017-10-31)
 -------------------
 
