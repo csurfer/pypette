@@ -1,11 +1,12 @@
 Release History
 ---------------
 
-Ongoing
--------
+v0.0.8 (2017-11-9)
+------------------
 
 **Improvement**
 
+* Making `Job` accept all python callables.
 * Increasing the test coverage by adding basic tests for run().
 
 v0.0.7 (2017-10-31)
