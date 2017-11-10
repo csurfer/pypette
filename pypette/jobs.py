@@ -11,7 +11,7 @@ called and what arguments it is called with. Classes in this file help to
 describe python methods in a structured way.
 """
 
-from types import FunctionType
+from inspect import isroutine
 
 
 class JobInterface(object):
@@ -41,7 +41,7 @@ class Job(JobInterface):
         """
 
         # Validate the structure of the job submitted.
-        assert isinstance(function, FunctionType), 'Python function expected'
+        assert isroutine(function), 'Python callable expected'
         assert isinstance(args, tuple)
         assert isinstance(kwargs, dict)
 
