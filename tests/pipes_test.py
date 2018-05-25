@@ -11,7 +11,6 @@ Usage from git root:
 
 import logging
 import unittest
-from threading import Thread
 
 from pypette import BashJob, Job, Pipe
 
@@ -78,32 +77,6 @@ class PipeTest(unittest.TestCase):
             self.assertEqual(
                 a, b, "Jobset in the current stage of pipeline is different"
             )
-
-    def test_create_thread_for(self):
-        """Tests creation of threads for various jobs."""
-
-        # Validate thread creation for python callable.
-
-        def dummy(msg):
-            pass
-
-        t = Pipe._create_thread_for(Job(dummy, args=("a",)))
-        self.assertEqual(
-            type(t), Thread, "Thread for Job created successfully"
-        )
-
-        # Validate thread creation for Pipe object.
-        p = Pipe("test")
-        t = Pipe._create_thread_for(p)
-        self.assertEqual(
-            type(t), Thread, "Thread for Pipe created successfully"
-        )
-
-        # Validate thread creation for bash job.
-        t = Pipe._create_thread_for(BashJob(["ls"]))
-        self.assertEqual(
-            type(t), Thread, "Thread for BashJob created successfully"
-        )
 
     def test_representative_name(self):
         """Validates the name for pipeline."""

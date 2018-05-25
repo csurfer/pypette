@@ -16,15 +16,14 @@ blocks.
 """
 
 import logging
-import subprocess
 from collections import OrderedDict
 from itertools import chain
-from threading import Thread
 from uuid import uuid4
 
 import crayons
 
-from .jobs import BashJob, Job, JobInterface
+from .jobs import JobInterface
+from .threadwrapper import ThreadWrapper
 
 
 class Pipe(object):
@@ -70,7 +69,7 @@ class Pipe(object):
             job_threads = []
             # Create job threads
             for job in jobset:
-                job_threads.append(Pipe._create_thread_for(job))
+                job_threads.append(ThreadWrapper(job))
             # Start job threads
             for job in job_threads:
                 job.start()
@@ -85,25 +84,6 @@ class Pipe(object):
         print("")
 
     @staticmethod
-    def _create_thread_for(job):
-        """Method to create thread to run the job in.
-
-        :param job: Pipeline job to run.
-        :type job: Job or BashJob or Pipe
-        """
-        if isinstance(job, Job):
-            return Thread(
-                target=job.function, args=job.args, kwargs=job.kwargs
-            )
-
-        elif isinstance(job, BashJob):
-            # Note that without lambda, subprocess.Popen runs immediately.
-            return Thread(target=lambda: subprocess.Popen(job.cmd).wait())
-
-        else:
-            return Thread(target=job.run)
-
-    @staticmethod
     def _validate(jobs):
         """Method to validate the jobs submitted to pipeline.
 
@@ -114,8 +94,7 @@ class Pipe(object):
             valid = isinstance(job, JobInterface) or isinstance(job, Pipe)
             if not valid:
                 logging.error(
-                    "Pipeline jobs should be of type Job or"
-                    + " BashJob or Pipe"
+                    "Pipeline jobs should be of type Job, BashJob or Pipe"
                 )
                 raise AssertionError(
                     "Invalid type {} submitted".format(type(job))
@@ -162,7 +141,7 @@ class Pipe(object):
                     pre = u"| "
                 l1 = [u"-" * (len(j.name) + 2) for j in jobs]
                 l1 = u"".join(l1)
-                l1 = l1[:-len(jobs[-1].name) // 2 + 1]
+                l1 = l1[: -len(jobs[-1].name) // 2 + 1]
                 print(crayons.blue(u"\u21E8 ") + crayons.blue(l1))
                 fmt = u"{0:^{wid}}"
                 l2 = [fmt.format(u"\u21E9", wid=len(j.name) + 2) for j in jobs]
