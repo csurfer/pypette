@@ -9,3 +9,4 @@
 
 from .jobs import BashJob, Job
 from .pipes import Pipe
+from .threadwrapper import ThreadState, ThreadWrapper
