@@ -1,0 +1,483 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Job &#8212; pypette 0.0.8 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Gate Object" href="api.html" />
+    <link rel="prev" title="Features" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="job">
+<h1>Job<a class="headerlink" href="#job" title="Permalink to this headline">¶</a></h1>
+<p>The basic unit of execution, say a python method or a callable.</p>
+<div class="section" id="for-methods-without-arguments">
+<h2>for methods without arguments<a class="headerlink" href="#for-methods-without-arguments" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Job</span>
+
+<span class="k">def</span> <span class="nf">method</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello!&quot;</span><span class="p">)</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="for-methods-with-arguments">
+<h2>for methods with arguments<a class="headerlink" href="#for-methods-with-arguments" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Job</span>
+
+<span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello &quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;!&quot;</span><span class="p">)</span>
+
+<span class="c1"># As argument list</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;World&quot;</span><span class="p">,))</span>
+
+<span class="c1"># As key word arguments</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;World&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="for-lambda-methods">
+<h2>for lambda methods<a class="headerlink" href="#for-lambda-methods" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Job</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="bashjob">
+<h1>BashJob<a class="headerlink" href="#bashjob" title="Permalink to this headline">¶</a></h1>
+<p>The basic unit of execution, which runs a bash command.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">BashJob</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">BashJob</span><span class="p">([</span><span class="s1">&#39;ls&#39;</span><span class="p">,</span> <span class="s1">&#39;-l&#39;</span><span class="p">])</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">BashJob</span><span class="p">([</span><span class="s1">&#39;pwd&#39;</span><span class="p">])</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">BashJob</span><span class="p">([</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="s1">&#39;grep&#39;</span><span class="p">,</span> <span class="s1">&#39;colours&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pipe">
+<h1>Pipe<a class="headerlink" href="#pipe" title="Permalink to this headline">¶</a></h1>
+<p>Structure to specify the flow in which the jobs need to be executed.</p>
+<div class="section" id="creation-modes">
+<h2>Creation Modes<a class="headerlink" href="#creation-modes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="fail-fast-default">
+<h3>FAIL_FAST (Default)<a class="headerlink" href="#fail-fast-default" title="Permalink to this headline">¶</a></h3>
+<p>Pipe objects created in this mode do not execute any stages to come after an
+exception is thrown</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span><span class="p">,</span> <span class="n">Gate</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">FAIL_FAST</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="execute-all">
+<h3>EXECUTE_ALL<a class="headerlink" href="#execute-all" title="Permalink to this headline">¶</a></h3>
+<p>Pipe objects created in this mode continue to execute all stages to come after
+an exception is thrown i,e these pipelines are resilient to exceptions.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span><span class="p">,</span> <span class="n">Gate</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">EXECUTE_ALL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="adding-jobs-to-pipeline">
+<h2>Adding jobs to pipeline<a class="headerlink" href="#adding-jobs-to-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>Any object of the type <a class="reference internal" href="api.html#pypette.BashJob" title="pypette.BashJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">BashJob</span></code></a>,
+<a class="reference internal" href="api.html#pypette.Job" title="pypette.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> or <a class="reference internal" href="api.html#pypette.Pipe" title="pypette.Pipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipe</span></code></a> can be added as a
+job to the pipeline</p>
+<div class="section" id="in-series">
+<h3>in series<a class="headerlink" href="#in-series" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+
+<span class="c1"># A list of jobs can be added in series as</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">job1</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">job2</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">job3</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">job4</span><span class="p">)</span>
+
+<span class="c1"># Or as a job list</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_jobs</span><span class="p">([</span><span class="n">job1</span><span class="p">,</span> <span class="n">job2</span><span class="p">,</span> <span class="n">job3</span><span class="p">,</span> <span class="n">job4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="in-parallel">
+<h3>in parallel<a class="headerlink" href="#in-parallel" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+
+<span class="c1"># A list of jobs can be added in series as</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">job1</span><span class="p">,</span> <span class="n">job2</span><span class="p">,</span> <span class="n">job3</span><span class="p">,</span> <span class="n">job4</span><span class="p">)</span>
+
+<span class="c1"># Or as a job list</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_jobs</span><span class="p">([</span><span class="n">job1</span><span class="p">,</span> <span class="n">job2</span><span class="p">,</span> <span class="n">job3</span><span class="p">,</span> <span class="n">job4</span><span class="p">],</span> <span class="n">run_in_parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="adding-dependencies-to-pipelines">
+<h2>Adding dependencies to pipelines<a class="headerlink" href="#adding-dependencies-to-pipelines" title="Permalink to this headline">¶</a></h2>
+<p>Irrespective of the mode the <a class="reference internal" href="api.html#pypette.Pipe" title="pypette.Pipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipe</span></code></a> object is created in,
+we several times come across scenarios where we want to create dependencies i,e
+we do not want a pipeline to run unless some other pipeline has succeeded. We
+can add one <a class="reference internal" href="api.html#pypette.Pipe" title="pypette.Pipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipe</span></code></a> object as a dependency to another
+<a class="reference internal" href="api.html#pypette.Pipe" title="pypette.Pipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipe</span></code></a> object as follows</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">build</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Build&#39;</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+
+<span class="c1"># Run test pipeline only if build has run and it was successful.</span>
+<span class="n">test</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="n">build</span><span class="p">)</span>
+
+<span class="n">cleanup</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Cleanup&#39;</span><span class="p">)</span>
+<span class="c1"># Run cleanup pipeline only if build and test have run and completed</span>
+<span class="c1"># successfully</span>
+<span class="n">cleanup</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="n">build</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="visualizing-the-pipeline-structure">
+<h2>Visualizing the pipeline structure<a class="headerlink" href="#visualizing-the-pipeline-structure" title="Permalink to this headline">¶</a></h2>
+<p>We can visualize the entire pipeline within the comfort of the terminal itself
+using the <cite>graph()</cite> method</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">test</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-the-pipeline">
+<h2>Running the pipeline<a class="headerlink" href="#running-the-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>We can start executing the stages of the pipeline by using the <cite>run()</cite> method</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">test</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generating-report-for-the-pipeline-run">
+<h2>Generating report for the pipeline run<a class="headerlink" href="#generating-report-for-the-pipeline-run" title="Permalink to this headline">¶</a></h2>
+<p>Once the pipleline has been run, we can generate a report of the run using the
+<cite>report()</cite> method</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">test</span><span class="o">.</span><span class="n">report</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="building-complex-pipelines">
+<h1>Building complex pipelines<a class="headerlink" href="#building-complex-pipelines" title="Permalink to this headline">¶</a></h1>
+<p>Jobs submitted to pipeline should be callables i.e. structures which can be
+run. This means python methods, lambdas etc qualify.</p>
+<p>What about Pipe itself?</p>
+<p>Of course, it is a callable and you can submit a pipe object to be run along
+with regular jobs. This way you can build small pipelines which achieve a
+specific task and then combine them to create more complex pipelines.</p>
+<p>Let us understand building pipelines using these jobs</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Job</span>
+
+<span class="k">def</span> <span class="nf">_good</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I am good.&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_bad</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;I am bad.&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_ugly</span><span class="p">():</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I&quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;am&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;ugly.&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_dummy</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="n">good</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">_good</span><span class="p">)</span>
+<span class="n">bad</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">_bad</span><span class="p">)</span>
+<span class="n">ugly</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">_ugly</span><span class="p">)</span>
+<span class="n">dummy</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">_dummy</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="exception-scenarios">
+<h2>Exception scenarios<a class="headerlink" href="#exception-scenarios" title="Permalink to this headline">¶</a></h2>
+<p>Let us understand how a pipeline behaves in case of exception scenarios</p>
+<div class="section" id="exception-thrown-in-series">
+<h3>Exception thrown in series<a class="headerlink" href="#exception-thrown-in-series" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;Test&quot;</span><span class="p">)</span> <span class="c1"># Note is similar to Pipe(&quot;Test&quot;, gate=Gate.FAIL_FAST)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">good</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">ugly</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="c1"># Executes good, bad and as bad throws exception, exits pipeline without</span>
+<span class="c1"># executing ugly.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exception-thrown-in-parallel">
+<h3>Exception thrown in parallel<a class="headerlink" href="#exception-thrown-in-parallel" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Pipe</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;Test&quot;</span><span class="p">)</span> <span class="c1"># Note is similar to Pipe(&quot;Test&quot;, gate=Gate.FAIL_FAST)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">good</span><span class="p">,</span> <span class="n">bad</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">ugly</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="c1"># Executes both good and bad as they need to be executed in parallel and we</span>
+<span class="c1"># have no control over what goes before what. And as bad throws an exception</span>
+<span class="c1"># does not execute the next stage which has ugly.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="resilient-mode">
+<h3>Resilient mode<a class="headerlink" href="#resilient-mode" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Gate</span><span class="p">,</span> <span class="n">Pipe</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">EXECUTE_ALL</span><span class="p">)</span>
+
+<span class="c1"># For a pipe created in the following way, ugly would have been executed for</span>
+<span class="c1"># both scenarios of exception in series and parallel listed above. What this</span>
+<span class="c1"># means is that bad would have thrown an exception but that wouldn&#39;t have</span>
+<span class="c1"># stopped pipeline from executing stages after it.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="combining-everything">
+<h2>Combining everything<a class="headerlink" href="#combining-everything" title="Permalink to this headline">¶</a></h2>
+<p>Combining all the scenarios listed above we can create a complex pipeline with
+jobs and sub pipes etc as follows.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypette</span> <span class="k">import</span> <span class="n">Gate</span><span class="p">,</span> <span class="n">Pipe</span>
+
+<span class="n">jenkins</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;Jenkins&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">EXECUTE_ALL</span><span class="p">)</span>
+
+<span class="n">build</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;Build&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">EXECUTE_ALL</span><span class="p">)</span>
+<span class="n">build</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">good</span><span class="p">)</span>
+
+<span class="c1"># Test pipeline will throw an exception.</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">EXECUTE_ALL</span><span class="p">)</span>
+<span class="n">test</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+
+<span class="c1"># Cleanup pipeline is dependent on both build and test pipeline success.</span>
+<span class="n">cleanup</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;Cleanup&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">EXECUTE_ALL</span><span class="p">)</span>
+<span class="n">cleanup</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">ugly</span><span class="p">)</span>
+<span class="n">cleanup</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="n">build</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+
+<span class="n">jenkins</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">dummy</span><span class="p">,</span> <span class="n">build</span><span class="p">)</span>
+<span class="n">jenkins</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">dummy</span><span class="p">)</span>
+<span class="n">jenkins</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">cleanup</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">)</span>
+
+<span class="n">jenkins</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span>
+
+<span class="c1"># Would output a graph on the lines of</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Jenkins)</span>
+<span class="c1"># |</span>
+<span class="c1"># |----------------------------</span>
+<span class="c1"># |            |              |</span>
+<span class="c1"># |          dummy        Pipe(Build)</span>
+<span class="c1"># |----------------------------</span>
+<span class="c1"># |            |              |</span>
+<span class="c1"># |          Pipe(Test)     dummy</span>
+<span class="c1"># |------------------------------------------</span>
+<span class="c1">#             |               |             |</span>
+<span class="c1">#           Pipe(Cleanup)   dummy         dummy</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Build)</span>
+<span class="c1"># |</span>
+<span class="c1"># |----------- good</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Test)</span>
+<span class="c1"># |</span>
+<span class="c1"># |------------ bad</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Cleanup)</span>
+<span class="c1"># |</span>
+<span class="c1"># |------------ ugly</span>
+
+<span class="n">jenkins</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="c1"># Take a minute before reading the answer and make a mental note of what</span>
+<span class="c1"># all gets executed and why?</span>
+<span class="c1">#</span>
+<span class="c1"># Answer:</span>
+<span class="c1"># dummy job gets executed 4 times as EXECUTE_ALL is exception resilient.</span>
+<span class="c1">#</span>
+<span class="c1"># build pipeline gets successfully executed (implying all internal jobs get</span>
+<span class="c1"># executed successully)</span>
+<span class="c1">#</span>
+<span class="c1"># test pipeline fails (implying one or more jobs threw an exception. Note</span>
+<span class="c1"># that even though other jobs do get executed within this pipeline as it is</span>
+<span class="c1"># resilient, it still is marked as overall failure as one ore more jobs</span>
+<span class="c1"># threw an exception.)</span>
+<span class="c1">#</span>
+<span class="c1"># cleanup pipeline wont start executing as it is dependent on build and test</span>
+<span class="c1"># being successful and test pipe has failed.</span>
+<span class="c1">#</span>
+<span class="c1"># jenkins overall gets marked as failed as one or more jobs/sub pipes have</span>
+<span class="c1"># failed.</span>
+
+<span class="n">jenkins</span><span class="o">.</span><span class="n">report</span><span class="p">()</span>
+
+<span class="c1"># Would provide a report on the lines of</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Jenkins)</span>
+<span class="c1"># |</span>
+<span class="c1"># |----------------------------</span>
+<span class="c1"># |            |              |</span>
+<span class="c1"># |          SUCCESS        SUCCESS</span>
+<span class="c1"># |----------------------------</span>
+<span class="c1"># |            |              |</span>
+<span class="c1"># |          FAILED         SUCCESS</span>
+<span class="c1"># |------------------------------------------</span>
+<span class="c1">#             |               |             |</span>
+<span class="c1">#            FAILED         SUCCESS       SUCCESS</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Build)</span>
+<span class="c1"># |</span>
+<span class="c1"># |----------- SUCCESS</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Test)</span>
+<span class="c1"># |</span>
+<span class="c1"># |------------ FAILED</span>
+<span class="c1">#</span>
+<span class="c1"># Pipe(Cleanup)</span>
+<span class="c1"># |</span>
+<span class="c1"># |------------ FAILED</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Job</a><ul>
+<li><a class="reference internal" href="#for-methods-without-arguments">for methods without arguments</a></li>
+<li><a class="reference internal" href="#for-methods-with-arguments">for methods with arguments</a></li>
+<li><a class="reference internal" href="#for-lambda-methods">for lambda methods</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bashjob">BashJob</a></li>
+<li><a class="reference internal" href="#pipe">Pipe</a><ul>
+<li><a class="reference internal" href="#creation-modes">Creation Modes</a><ul>
+<li><a class="reference internal" href="#fail-fast-default">FAIL_FAST (Default)</a></li>
+<li><a class="reference internal" href="#execute-all">EXECUTE_ALL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-jobs-to-pipeline">Adding jobs to pipeline</a><ul>
+<li><a class="reference internal" href="#in-series">in series</a></li>
+<li><a class="reference internal" href="#in-parallel">in parallel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-dependencies-to-pipelines">Adding dependencies to pipelines</a></li>
+<li><a class="reference internal" href="#visualizing-the-pipeline-structure">Visualizing the pipeline structure</a></li>
+<li><a class="reference internal" href="#running-the-pipeline">Running the pipeline</a></li>
+<li><a class="reference internal" href="#generating-report-for-the-pipeline-run">Generating report for the pipeline run</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-complex-pipelines">Building complex pipelines</a><ul>
+<li><a class="reference internal" href="#exception-scenarios">Exception scenarios</a><ul>
+<li><a class="reference internal" href="#exception-thrown-in-series">Exception thrown in series</a></li>
+<li><a class="reference internal" href="#exception-thrown-in-parallel">Exception thrown in parallel</a></li>
+<li><a class="reference internal" href="#resilient-mode">Resilient mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#combining-everything">Combining everything</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Features</a></li>
+      <li>Next: <a href="api.html" title="next chapter">Gate Object</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/structures.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Vishwas B Sharma.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/structures.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

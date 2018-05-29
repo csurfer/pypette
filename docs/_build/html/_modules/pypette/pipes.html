@@ -1,0 +1,388 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypette.pipes &#8212; pypette 0.0.8 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pypette.pipes</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">pipes.api</span>
+<span class="sd">~~~~~~~~~</span>
+<span class="sd">Class definitions to create, validate and run jobs as pipelines.</span>
+
+<span class="sd">Description:</span>
+
+<span class="sd">`Job` is the basic unit of pipeline which does some work.</span>
+<span class="sd">`Pipe` is a structure which helps run the above jobs one after the other or in</span>
+<span class="sd">parallel. A pipe can be used to run jobs or other pipes.</span>
+
+<span class="sd">Hence overtly complicated pipelines can be boiled down to the above two basic</span>
+<span class="sd">blocks.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="k">import</span> <span class="n">uuid4</span>
+
+<span class="kn">import</span> <span class="nn">crayons</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+
+<span class="kn">from</span> <span class="nn">.jobs</span> <span class="k">import</span> <span class="n">JobInterface</span>
+<span class="kn">from</span> <span class="nn">.threadwrapper</span> <span class="k">import</span> <span class="n">ThreadState</span><span class="p">,</span> <span class="n">ThreadWrapper</span>
+
+
+<div class="viewcode-block" id="Gate"><a class="viewcode-back" href="../../api.html#pypette.Gate">[docs]</a><span class="k">class</span> <span class="nc">Gate</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Different kinds of gating allowed for pipes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__fail_fast</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Fails at the first error or exception thrown from a job. (Default)</span>
+    <span class="n">FAIL_FAST</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">__fail_fast</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__execute_all</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># Silently captures the error or exception to execute all the jobs.</span>
+    <span class="n">EXECUTE_ALL</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">__execute_all</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pipe"><a class="viewcode-back" href="../../api.html#pypette.Pipe">[docs]</a><span class="k">class</span> <span class="nc">Pipe</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to define the pipeline structure.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="n">Gate</span><span class="o">.</span><span class="n">FAIL_FAST</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
+
+<span class="sd">        :param name: Name given to the pipe object for identification.</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Pipe(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_map</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread_map</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gate</span> <span class="o">=</span> <span class="n">gate</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dependent_on</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Pipe.add_jobs"><a class="viewcode-back" href="../../api.html#pypette.Pipe.add_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">add_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">run_in_parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to add jobs to pipeline.</span>
+
+<span class="sd">        :param jobs: List of jobs/pipes to run.</span>
+<span class="sd">        :type jobs: list</span>
+<span class="sd">        :param run_in_parallel: This flag when set to False(default) runs the</span>
+<span class="sd">                                list of jobs given one after another. This flag</span>
+<span class="sd">                                if set to True runs the jobs/pipes submitted in</span>
+<span class="sd">                                parallel threads.</span>
+<span class="sd">        :type run_in_parallel: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Return if nothing to do.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">jobs</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Validate the set of jobs given.</span>
+        <span class="n">Pipe</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
+
+        <span class="c1"># Add jobs to pipeline.</span>
+        <span class="k">if</span> <span class="n">run_in_parallel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_in_parallel</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_in_series</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Pipe.add_stage"><a class="viewcode-back" href="../../api.html#pypette.Pipe.add_stage">[docs]</a>    <span class="k">def</span> <span class="nf">add_stage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to add stages of pipeline. Jobs are to be given comma</span>
+<span class="sd">        separated and all the jobs given form a single stage. Another way to</span>
+<span class="sd">        add jobs to a pipeline in builder pattern.</span>
+
+<span class="sd">        :param args: Jobs to be added. Adds comma separated list in parallel or</span>
+<span class="sd">                     a single job as a stage.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Return if nothing to do.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Validate the set of jobs given.</span>
+        <span class="n">Pipe</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="c1"># Add jobs to pipeline.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_in_parallel</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_in_series</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Pipe.add_dependency"><a class="viewcode-back" href="../../api.html#pypette.Pipe.add_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to add dependency of one pipe on another.</span>
+
+<span class="sd">        :param args: Pipes to be added as dependency for this pipeline.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">Pipe</span><span class="p">):</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Dependecies should be of type Pipe&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                    <span class="s2">&quot;Invalid type </span><span class="si">{}</span><span class="s2"> submitted&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">job</span><span class="p">))</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dependent_on</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Pipe.dependency"><a class="viewcode-back" href="../../api.html#pypette.Pipe.dependency">[docs]</a>    <span class="k">def</span> <span class="nf">dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to check for success of pipelines listed as dependency.&quot;&quot;&quot;</span>
+        <span class="n">allowed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependent_on</span><span class="p">:</span>
+            <span class="n">allowed</span> <span class="o">=</span> <span class="n">allowed</span> <span class="ow">and</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">allowed</span></div>
+
+<div class="viewcode-block" id="Pipe.run"><a class="viewcode-back" href="../../api.html#pypette.Pipe.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to run the pipeline.&quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;run() method called on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Dependency for </span><span class="si">{}</span><span class="s2"> is </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependent_on</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependency</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="n">broken</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">jobset</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">prev</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">job_threads</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># Create job threads</span>
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobset</span><span class="p">:</span>
+                <span class="n">job_threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ThreadWrapper</span><span class="p">(</span><span class="n">job</span><span class="p">))</span>
+            <span class="c1"># Start job threads</span>
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">job_threads</span><span class="p">:</span>
+                <span class="n">job</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="c1"># Job main thread to create flow</span>
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">job_threads</span><span class="p">:</span>
+                <span class="n">job</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread_map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">job_threads</span><span class="p">)</span>
+            <span class="c1"># Stage finished successfully.</span>
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">job_threads</span><span class="p">:</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span> <span class="ow">and</span> <span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">prev</span><span class="p">:</span>
+                    <span class="n">broken</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">gate</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">prev</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">broken</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">SUCCESS</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">FAILED</span></div>
+
+<div class="viewcode-block" id="Pipe.graph"><a class="viewcode-back" href="../../api.html#pypette.Pipe.graph">[docs]</a>    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to print the structure of the pipeline.&quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;graph() method called on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pretty_print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_cstate</span><span class="p">(</span><span class="n">tw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns state in colour for pretty printing reports.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tw</span><span class="p">,</span> <span class="n">ThreadWrapper</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tw</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">green</span><span class="p">(</span><span class="n">tw</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">tw</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">FAILED</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">red</span><span class="p">(</span><span class="n">tw</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">yellow</span><span class="p">(</span><span class="n">tw</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">SUCCESS</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">tw</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">green</span><span class="p">(</span><span class="n">tw</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">ThreadState</span><span class="o">.</span><span class="n">FAILED</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">tw</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">red</span><span class="p">(</span><span class="n">tw</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">yellow</span><span class="p">(</span><span class="n">tw</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Pipe.report"><a class="viewcode-back" href="../../api.html#pypette.Pipe.report">[docs]</a>    <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to pretty print the report.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">green</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread_map</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">red</span><span class="p">(</span><span class="s2">&quot;No jobs run in pipeline yet !&quot;</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="n">joblen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread_map</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">jobs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread_map</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;| &quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\u21E8</span><span class="s2">  &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Pipe</span><span class="o">.</span><span class="n">_cstate</span><span class="p">(</span><span class="n">jobs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">joblen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">pre</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;  &quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pre</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;| &quot;</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">10</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\u21E8</span><span class="s2"> &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="n">l1</span><span class="p">))</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;{0:^</span><span class="si">{wid}</span><span class="s2">}&quot;</span>
+                <span class="n">l2</span> <span class="o">=</span> <span class="p">[</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\u21E9</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">wid</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span> <span class="o">+</span> <span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l2</span><span class="p">)))</span>
+                <span class="n">l3</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">Pipe</span><span class="o">.</span><span class="n">_cstate</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">wid</span><span class="o">=</span><span class="mi">12</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span>
+                <span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l3</span><span class="p">))</span>
+
+        <span class="n">pipes</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">job</span><span class="p">,</span> <span class="n">Pipe</span><span class="p">),</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">thread_map</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pipes</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">report</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="n">jobs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to validate the jobs submitted to pipeline.</span>
+
+<span class="sd">        :param jobs: List of jobs submitted.</span>
+<span class="sd">        :type jobs: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">JobInterface</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">Pipe</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;Pipeline jobs should be of type Job, BashJob or Pipe&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                    <span class="s2">&quot;Invalid type </span><span class="si">{}</span><span class="s2"> submitted&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">job</span><span class="p">))</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_in_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to add jobs to pipeline so that they run in parallel.</span>
+
+<span class="sd">        :param jobs: List of jobs submitted.</span>
+<span class="sd">        :type jobs: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_map</span><span class="p">[</span><span class="n">uuid4</span><span class="p">()]</span> <span class="o">=</span> <span class="n">jobs</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> submitted to be run in parallel&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jobs</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_add_in_series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to add jobs to pipeline so that they run one after another,</span>
+<span class="sd">        only after the previous job completes.</span>
+
+<span class="sd">        :param jobs: List of jobs submitted.</span>
+<span class="sd">        :type jobs: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_map</span><span class="p">[</span><span class="n">uuid4</span><span class="p">()]</span> <span class="o">=</span> <span class="p">[</span><span class="n">job</span><span class="p">]</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> submitted to be run in series&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to pretty print the pipeline.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">green</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_map</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">red</span><span class="p">(</span><span class="s2">&quot;No jobs added to the pipeline yet !&quot;</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="n">joblen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_map</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">jobs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_map</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;| &quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\u21E8</span><span class="s2">  &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">crayons</span><span class="o">.</span><span class="n">white</span><span class="p">(</span><span class="n">jobs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">joblen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">pre</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;  &quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pre</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;| &quot;</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\u21E8</span><span class="s2"> &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="n">l1</span><span class="p">))</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;{0:^</span><span class="si">{wid}</span><span class="s2">}&quot;</span>
+                <span class="n">l2</span> <span class="o">=</span> <span class="p">[</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\u21E9</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">wid</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span> <span class="o">+</span> <span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l2</span><span class="p">)))</span>
+                <span class="n">l3</span> <span class="o">=</span> <span class="p">[</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">wid</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">crayons</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span> <span class="o">+</span> <span class="n">crayons</span><span class="o">.</span><span class="n">white</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l3</span><span class="p">)))</span>
+
+        <span class="n">pipes</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Pipe</span><span class="p">),</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">job_map</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pipes</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">_pretty_print</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Vishwas B Sharma.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

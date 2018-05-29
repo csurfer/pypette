@@ -1,0 +1,14 @@
+Using pip
+~~~~~~~~~
+
+.. code:: bash
+
+    pip install pypette
+
+Directly from the repository
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: bash
+
+    git clone https://github.com/csurfer/pypette.git
+    python pypette/setup.py install
