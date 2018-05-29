@@ -23,6 +23,14 @@ class ThreadState(Enum):
     FAILED = 4
 
 
+class JobTypes(Enum):
+    """Different types of jobs to process."""
+
+    JOB = 1
+    BASHJOB = 2
+    PIPE = 3
+
+
 class ThreadWrapper(Thread):
     """Wrapper around a thread to allow for exception handling."""
 
@@ -32,18 +40,22 @@ class ThreadWrapper(Thread):
         :param job: Job to run.
         :type: JobInterface or Pipe.
         """
+        self._job = job
         if isinstance(job, Job):
+            self._jobtype = JobTypes.JOB
             super(ThreadWrapper, self).__init__(
                 target=job.function, args=job.args, kwargs=job.kwargs
             )
 
         elif isinstance(job, BashJob):
             # Note that without lambda, subprocess.Popen runs immediately.
+            self._jobtype = JobTypes.BASHJOB
             super(ThreadWrapper, self).__init__(
                 target=lambda: subprocess.Popen(job.cmd).wait()
             )
 
         else:
+            self._jobtype = JobTypes.PIPE
             super(ThreadWrapper, self).__init__(target=job.run)
 
         self._state = ThreadState.INIT
@@ -54,10 +66,18 @@ class ThreadWrapper(Thread):
         try:
             self._state = ThreadState.RUNNING
             super(ThreadWrapper, self).run()
-            self._state = ThreadState.SUCCESS
+            if self._jobtype == JobTypes.PIPE:
+                self._state = self._job.state
+            else:
+                self._state = ThreadState.SUCCESS
         except Exception as e:
             self._state = ThreadState.FAILED
             self._exception = e
+
+    @property
+    def job(self):
+        """Thread's job."""
+        return self._job
 
     @property
     def state(self):
