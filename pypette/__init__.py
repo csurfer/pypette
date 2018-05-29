@@ -8,5 +8,5 @@
 # /_/    /____/_/
 
 from .jobs import BashJob, Job
-from .pipes import Pipe
+from .pipes import Gate, Pipe
 from .threadwrapper import ThreadState, ThreadWrapper

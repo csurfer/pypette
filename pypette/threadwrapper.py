@@ -17,22 +17,23 @@ from .jobs import BashJob, Job
 class ThreadState(Enum):
     """State in which a thread can be in."""
 
-    INIT = 1
-    RUNNING = 2
-    SUCCESS = 3
-    FAILED = 4
+    FAILED = 1
+    INIT = 2
+    RUNNING = 3
+    SUCCESS = 4
 
 
 class JobTypes(Enum):
-    """Different types of jobs to process."""
+    """Different types of jobs to process"""
 
-    JOB = 1
-    BASHJOB = 2
+    BASHJOB = 1
+    JOB = 2
     PIPE = 3
 
 
 class ThreadWrapper(Thread):
-    """Wrapper around a thread to allow for exception handling."""
+    """Wrapper around a thread to allow for exception handling and safe
+    job execution."""
 
     def __init__(self, job):
         """Constructor.
@@ -76,7 +77,7 @@ class ThreadWrapper(Thread):
 
     @property
     def job(self):
-        """Thread's job."""
+        """Job being run by the thread."""
         return self._job
 
     @property

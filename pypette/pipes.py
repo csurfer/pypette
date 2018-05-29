@@ -65,8 +65,9 @@ class Pipe(object):
         :param jobs: List of jobs/pipes to run.
         :type jobs: list
         :param run_in_parallel: This flag when set to False(default) runs the
-        list of jobs given one after another. This flag if set to True runs the
-        jobs/pipes submitted in parallel threads.
+                                list of jobs given one after another. This flag
+                                if set to True runs the jobs/pipes submitted in
+                                parallel threads.
         :type run_in_parallel: boolean
         """
 
@@ -83,13 +84,15 @@ class Pipe(object):
         else:
             self._add_in_series(jobs)
 
+        return self
+
     def add_stage(self, *args):
         """Method to add stages of pipeline. Jobs are to be given comma
         separated and all the jobs given form a single stage. Another way to
         add jobs to a pipeline in builder pattern.
 
         :param args: Jobs to be added. Adds comma separated list in parallel or
-        a single job as a stage.
+                     a single job as a stage.
         """
 
         # Return if nothing to do.
