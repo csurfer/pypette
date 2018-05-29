@@ -4,6 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+sphinx = "*"
+sphinx-autobuild = "*"
 
 [packages]
 crayons = "*"
