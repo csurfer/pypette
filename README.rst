@@ -95,6 +95,10 @@ interface consists of only 4 methods.
     # all jobs in job list finish.
     p.add_jobs(job_list, run_in_parallel=True)
 
+    # Add jobs in a builder format.
+    p.add_stage(job1).add_stage(job2) # To add jobs in series.
+    p.add_stage(job1, job2) # To add jobs in parallel.
+
 Building complex pipelines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -161,6 +165,12 @@ Running the entire pipeline.
 
 The only thing you need to do at this point to run the entire pipeline is to
 call ``run()`` on your pipeline object.
+
+Reporting the entire pipeline.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The only thing you need to do at this point to get the report of entire
+pipeline is to call `report()` on your pipeline object.
 
 Contributing
 ------------

@@ -1,6 +1,19 @@
 Release History
 ---------------
 
+Under development
+------------------
+
+**Improvement**
+
+* Extending Pipe to handle and capture exceptions gracefully.
+* Extending Pipe to have modes:
+    * FAIL_FAST : Where an exception stops the execution of further stages.
+    * EXECUTE_ALL : Where an exception doesn't stop the execution of further
+      stages.
+* Adding ability to specify dependency on other pipelines.
+* Adding ability of reporting.
+
 v0.0.8 (2017-11-9)
 ------------------
 
