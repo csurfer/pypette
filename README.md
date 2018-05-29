@@ -183,7 +183,7 @@ Visualizing the top-level pipeline in
 led to the following visualization.
 
 <p align="center">
-    <img src="https://i.imgur.com/e0CYIU5.png" width="200px">
+    <img src="https://i.imgur.com/1PaPlD3.png" width="200px">
 </p>
 
 ### Running the entire pipeline.

@@ -207,7 +207,7 @@ If you found the utility helpful you can buy me a cup of coffee using
 .. _examples/basic.py: https://github.com/csurfer/pypette/examples/basic.py
 .. _examples: https://github.com/csurfer/pypette/examples
 
-.. |Viz| image:: https://i.imgur.com/e0CYIU5.png
+.. |Viz| image:: https://i.imgur.com/1PaPlD3.png
    :width: 200px
 
 .. |Licence| image:: https://img.shields.io/badge/license-MIT-blue.svg
