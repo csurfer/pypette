@@ -43,8 +43,11 @@ instructions.
 
 ## Features
 
-- Simple interface.
+- Ridiculously simple interface.
 - Ability to view pipeline structure within the comfort of a terminal.
+- Run pipeline in exception resilient way if needed.
+- Create dependencies on pipelines easily.
+- Generate a easy to view/understand report within the comfort of a terminal.
 
 ## Setup
 
@@ -60,6 +63,10 @@ pip install pypette
 git clone https://github.com/csurfer/pypette.git
 python pypette/setup.py install
 ```
+
+## Documentation
+
+Detailed documentation can be found at https://csurfer.github.io/pypette
 
 ## Structures
 
