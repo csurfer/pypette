@@ -1,8 +1,8 @@
 Release History
 ---------------
 
-Under development
-------------------
+v0.0.9 (2018-05-30)
+-------------------
 
 **Improvement**
 
