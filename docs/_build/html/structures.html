@@ -24,9 +24,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
-  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+  </a>
+</p>
 
-    <div class="document">
+
+
+<p class="blurb">Ridiculously simple flow controller for building complex pipelines</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=csurfer&repo=pypette&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Job</a><ul>
+<li><a class="reference internal" href="#for-methods-without-arguments">for methods without arguments</a></li>
+<li><a class="reference internal" href="#for-methods-with-arguments">for methods with arguments</a></li>
+<li><a class="reference internal" href="#for-lambda-methods">for lambda methods</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bashjob">BashJob</a></li>
+<li><a class="reference internal" href="#pipe">Pipe</a><ul>
+<li><a class="reference internal" href="#creation-modes">Creation Modes</a><ul>
+<li><a class="reference internal" href="#fail-fast-default">FAIL_FAST (Default)</a></li>
+<li><a class="reference internal" href="#execute-all">EXECUTE_ALL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-jobs-to-pipeline">Adding jobs to pipeline</a><ul>
+<li><a class="reference internal" href="#in-series">in series</a></li>
+<li><a class="reference internal" href="#in-parallel">in parallel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-dependencies-to-pipelines">Adding dependencies to pipelines</a></li>
+<li><a class="reference internal" href="#visualizing-the-pipeline-structure">Visualizing the pipeline structure</a></li>
+<li><a class="reference internal" href="#running-the-pipeline">Running the pipeline</a></li>
+<li><a class="reference internal" href="#generating-report-for-the-pipeline-run">Generating report for the pipeline run</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-complex-pipelines">Building complex pipelines</a><ul>
+<li><a class="reference internal" href="#exception-scenarios">Exception scenarios</a><ul>
+<li><a class="reference internal" href="#exception-thrown-in-series">Exception thrown in series</a></li>
+<li><a class="reference internal" href="#exception-thrown-in-parallel">Exception thrown in parallel</a></li>
+<li><a class="reference internal" href="#resilient-mode">Resilient mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#combining-everything">Combining everything</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -393,77 +470,8 @@ jobs and sub pipes etc as follows.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Job</a><ul>
-<li><a class="reference internal" href="#for-methods-without-arguments">for methods without arguments</a></li>
-<li><a class="reference internal" href="#for-methods-with-arguments">for methods with arguments</a></li>
-<li><a class="reference internal" href="#for-lambda-methods">for lambda methods</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#bashjob">BashJob</a></li>
-<li><a class="reference internal" href="#pipe">Pipe</a><ul>
-<li><a class="reference internal" href="#creation-modes">Creation Modes</a><ul>
-<li><a class="reference internal" href="#fail-fast-default">FAIL_FAST (Default)</a></li>
-<li><a class="reference internal" href="#execute-all">EXECUTE_ALL</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#adding-jobs-to-pipeline">Adding jobs to pipeline</a><ul>
-<li><a class="reference internal" href="#in-series">in series</a></li>
-<li><a class="reference internal" href="#in-parallel">in parallel</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#adding-dependencies-to-pipelines">Adding dependencies to pipelines</a></li>
-<li><a class="reference internal" href="#visualizing-the-pipeline-structure">Visualizing the pipeline structure</a></li>
-<li><a class="reference internal" href="#running-the-pipeline">Running the pipeline</a></li>
-<li><a class="reference internal" href="#generating-report-for-the-pipeline-run">Generating report for the pipeline run</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#building-complex-pipelines">Building complex pipelines</a><ul>
-<li><a class="reference internal" href="#exception-scenarios">Exception scenarios</a><ul>
-<li><a class="reference internal" href="#exception-thrown-in-series">Exception thrown in series</a></li>
-<li><a class="reference internal" href="#exception-thrown-in-parallel">Exception thrown in parallel</a></li>
-<li><a class="reference internal" href="#resilient-mode">Resilient mode</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#combining-everything">Combining everything</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Features</a></li>
-      <li>Next: <a href="api.html" title="next chapter">Gate Object</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/structures.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
+    <div class="clearer"></div>
+  </div>
     <div class="footer">
       &copy;2018, Vishwas B Sharma.
       
@@ -476,6 +484,10 @@ jobs and sub pipes etc as follows.</p>
           rel="nofollow">Page source</a>
     </div>
 
+    
+    <a href="https://github.com/csurfer/pypette" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
     
 
     
