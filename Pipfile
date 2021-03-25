@@ -10,4 +10,4 @@ sphinx-autobuild = "*"
 [packages]
 crayons = "*"
 e1839a8 = {path = ".",editable = true}
-pyyaml = "==4.2b1"
+pyyaml = "==5.4"
