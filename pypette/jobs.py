@@ -48,7 +48,7 @@ class Job(JobInterface):
         :param kwargs: Keyword arguments to run the method with.
         :type kwargs: dict
         """
-        assert isroutine(function), "Python callable expected"
+        assert isroutine(function), 'Python callable expected'
         assert isinstance(args, tuple)
         assert isinstance(kwargs, dict)
 
@@ -60,16 +60,10 @@ class Job(JobInterface):
     def __eq__(self, other):
         # Note that same method run with two different sets of parameters is
         # considered to be two different jobs and not one job.
-        return (
-            self.function == other.function
-            and self.args == other.args
-            and self.kwargs == other.kwargs
-        )
+        return self.function == other.function and self.args == other.args and self.kwargs == other.kwargs
 
     def __repr__(self):
-        return "Job(function={}, args={}, kwargs={})".format(
-            self.name, self.args, self.kwargs
-        )
+        return 'Job(function={}, args={}, kwargs={})'.format(self.name, self.args, self.kwargs)
 
 
 class BashJob(JobInterface):
@@ -81,13 +75,13 @@ class BashJob(JobInterface):
         :param cmd: Bash command to run.
         :type cmd: list
         """
-        assert isinstance(cmd, list), "Bash command as list of strings needed"
+        assert isinstance(cmd, list), 'Bash command as list of strings needed'
 
-        super(BashJob, self).__init__(" ".join(cmd))
+        super(BashJob, self).__init__(' '.join(cmd))
         self.cmd = cmd
 
     def __eq__(self, other):
         return self.cmd == other.cmd
 
     def __repr__(self):
-        return "BashJob(cmd={})".format(self.name)
+        return 'BashJob(cmd={})'.format(self.name)

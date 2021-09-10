@@ -24,7 +24,7 @@ class ThreadWrapperTest(unittest.TestCase):
             pass
 
         def corrupt():
-            raise Exception("Corrupt")
+            raise Exception('Corrupt')
 
         tw = ThreadWrapper(Job(function=dummy))
         self.assertEqual(tw.state, ThreadState.INIT)
@@ -43,7 +43,7 @@ class ThreadWrapperTest(unittest.TestCase):
             pass
 
         def corrupt():
-            raise Exception("Corrupt")
+            raise Exception('Corrupt')
 
         tw = ThreadWrapper(Job(function=dummy))
         self.assertEqual(tw.state, ThreadState.INIT)

@@ -7,9 +7,8 @@ Class definitions to create wrapper threads for jobs.
 """
 
 import subprocess
-from threading import Thread
-
 from enum import Enum
+from threading import Thread
 
 from .jobs import BashJob, Job
 
@@ -44,16 +43,12 @@ class ThreadWrapper(Thread):
         self._job = job
         if isinstance(job, Job):
             self._jobtype = JobTypes.JOB
-            super(ThreadWrapper, self).__init__(
-                target=job.function, args=job.args, kwargs=job.kwargs
-            )
+            super(ThreadWrapper, self).__init__(target=job.function, args=job.args, kwargs=job.kwargs)
 
         elif isinstance(job, BashJob):
             # Note that without lambda, subprocess.Popen runs immediately.
             self._jobtype = JobTypes.BASHJOB
-            super(ThreadWrapper, self).__init__(
-                target=lambda: subprocess.Popen(job.cmd).wait()
-            )
+            super(ThreadWrapper, self).__init__(target=lambda: subprocess.Popen(job.cmd).wait())
 
         else:
             self._jobtype = JobTypes.PIPE
