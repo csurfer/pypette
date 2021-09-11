@@ -8,6 +8,7 @@ python:
 install:
   - "pip install -r requirements.txt"
   - "pip install coveralls"
+  - "pip install tox-travis"
 # Command to run tests.
 script: tox
 after_success: "coveralls"
