@@ -5,6 +5,7 @@ except ImportError:
     from distutils.core import setup
 
 from os import path
+from typing import Any, Dict
 
 here = path.abspath(path.dirname(__file__))
 
@@ -13,7 +14,7 @@ with open(path.join(here, 'README.rst')) as f:
     long_description = f.read()
 
 # Get package and author details.
-about = {}
+about: Dict[str, Any] = {}
 with open(path.join(here, 'pypette', '__version__.py')) as f:
     exec(f.read(), about)
 
@@ -45,10 +46,10 @@ setup(
         # Operating Systems.
         'Operating System :: POSIX',
         # Supported Languages.
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         # Topic tags.
         'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Libraries :: Python Modules',

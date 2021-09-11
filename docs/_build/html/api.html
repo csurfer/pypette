@@ -1,18 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Gate Object &#8212; pypette 0.0.9 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Job" href="structures.html" />
@@ -51,7 +51,7 @@
 
 
 
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Gate Object</a></li>
 <li><a class="reference internal" href="#bashjob-object">BashJob Object</a></li>
@@ -66,212 +66,203 @@
 
 <p><a href="https://twitter.com/sharmavishwas7" class="twitter-follow-button" data-show-count="false">Follow @sharmavishwas7</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <span class="target" id="module-pypette"></span><p>This part of the documentation covers all the interfaces of pypette.</p>
-<div class="section" id="gate-object">
+<section id="gate-object">
 <h1>Gate Object<a class="headerlink" href="#gate-object" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pypette.Gate">
-<em class="property">class </em><code class="descclassname">pypette.</code><code class="descname">Gate</code><a class="reference internal" href="_modules/pypette/pipes.html#Gate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Gate" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="pypette.Gate">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pypette.</span></span><span class="sig-name descname"><span class="pre">Gate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Gate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Gate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Different kinds of gating allowed for pipes.</p>
-<dl class="attribute">
-<dt id="pypette.Gate.EXECUTE_ALL">
-<code class="descname">EXECUTE_ALL</code><em class="property"> = functools.partial(&lt;function Gate.__execute_all&gt;)</em><a class="headerlink" href="#pypette.Gate.EXECUTE_ALL" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pypette.Gate.EXECUTE_ALL">
+<span class="sig-name descname"><span class="pre">EXECUTE_ALL</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#pypette.Gate.EXECUTE_ALL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="pypette.Gate.FAIL_FAST">
-<code class="descname">FAIL_FAST</code><em class="property"> = functools.partial(&lt;function Gate.__fail_fast&gt;)</em><a class="headerlink" href="#pypette.Gate.FAIL_FAST" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pypette.Gate.FAIL_FAST">
+<span class="sig-name descname"><span class="pre">FAIL_FAST</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#pypette.Gate.FAIL_FAST" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="bashjob-object">
+</section>
+<section id="bashjob-object">
 <h1>BashJob Object<a class="headerlink" href="#bashjob-object" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pypette.BashJob">
-<em class="property">class </em><code class="descclassname">pypette.</code><code class="descname">BashJob</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/jobs.html#BashJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.BashJob" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="pypette.BashJob">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pypette.</span></span><span class="sig-name descname"><span class="pre">BashJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/jobs.html#BashJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.BashJob" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to format bash commands as pipeline jobs.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="job-object">
+</section>
+<section id="job-object">
 <h1>Job Object<a class="headerlink" href="#job-object" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pypette.Job">
-<em class="property">class </em><code class="descclassname">pypette.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>function</em>, <em>args=()</em>, <em>kwargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/jobs.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Job" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="pypette.Job">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pypette.</span></span><span class="sig-name descname"><span class="pre">Job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/jobs.html#Job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to format python methods as pipeline jobs.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="pipe-object">
+</section>
+<section id="pipe-object">
 <h1>Pipe Object<a class="headerlink" href="#pipe-object" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pypette.Pipe">
-<em class="property">class </em><code class="descclassname">pypette.</code><code class="descname">Pipe</code><span class="sig-paren">(</span><em>name</em>, <em>gate=&lt;Gate.FAIL_FAST: functools.partial(&lt;function Gate.__fail_fast&gt;)&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="pypette.Pipe">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pypette.</span></span><span class="sig-name descname"><span class="pre">Pipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pypette.Gate" title="pypette.pipes.Gate"><span class="pre">pypette.pipes.Gate</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Gate.FAIL_FAST</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to define the pipeline structure.</p>
-<dl class="method">
-<dt id="pypette.Pipe.add_dependency">
-<code class="descname">add_dependency</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.add_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe.add_dependency" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.Pipe.add_dependency">
+<span class="sig-name descname"><span class="pre">add_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.add_dependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe.add_dependency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to add dependency of one pipe on another.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> – Pipes to be added as dependency for this pipeline.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – Pipes to be added as dependency for this pipeline.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="pypette.Pipe.add_jobs">
-<code class="descname">add_jobs</code><span class="sig-paren">(</span><em>jobs</em>, <em>run_in_parallel=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.add_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe.add_jobs" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.Pipe.add_jobs">
+<span class="sig-name descname"><span class="pre">add_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pypette.Job" title="pypette.jobs.Job"><span class="pre">pypette.jobs.Job</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#pypette.BashJob" title="pypette.jobs.BashJob"><span class="pre">pypette.jobs.BashJob</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#pypette.Pipe" title="pypette.pipes.Pipe"><span class="pre">pypette.pipes.Pipe</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_in_parallel</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.add_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe.add_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to add jobs to pipeline.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>jobs</strong> (<em>list</em>) – List of jobs/pipes to run.</li>
-<li><strong>run_in_parallel</strong> (<em>boolean</em>) – This flag when set to False(default) runs the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jobs</strong> – List of jobs/pipes to run.</p></li>
+<li><p><strong>run_in_parallel</strong> – This flag when set to False(default) runs the
 list of jobs given one after another. This flag
 if set to True runs the jobs/pipes submitted in
-parallel threads.</li>
+parallel threads.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="pypette.Pipe.add_stage">
-<code class="descname">add_stage</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.add_stage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe.add_stage" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.Pipe.add_stage">
+<span class="sig-name descname"><span class="pre">add_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.add_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe.add_stage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to add stages of pipeline. Jobs are to be given comma
 separated and all the jobs given form a single stage. Another way to
 add jobs to a pipeline in builder pattern.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> – Jobs to be added. Adds comma separated list in parallel or
-a single job as a stage.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – Jobs to be added. Adds comma separated list in parallel or
+a single job as a stage.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="pypette.Pipe.dependency">
-<code class="descname">dependency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe.dependency" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.Pipe.dependency">
+<span class="sig-name descname"><span class="pre">dependency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.dependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe.dependency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to check for success of pipelines listed as dependency.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pypette.Pipe.graph">
-<code class="descname">graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe.graph" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.Pipe.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe.graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to print the structure of the pipeline.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pypette.Pipe.report">
-<code class="descname">report</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe.report" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.Pipe.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to pretty print the report.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pypette.Pipe.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.Pipe.run" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.Pipe.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/pipes.html#Pipe.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.Pipe.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to run the pipeline.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="threadstate-object">
+</section>
+<section id="threadstate-object">
 <h1>ThreadState Object<a class="headerlink" href="#threadstate-object" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pypette.ThreadState">
-<em class="property">class </em><code class="descclassname">pypette.</code><code class="descname">ThreadState</code><a class="reference internal" href="_modules/pypette/threadwrapper.html#ThreadState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.ThreadState" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="pypette.ThreadState">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pypette.</span></span><span class="sig-name descname"><span class="pre">ThreadState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/threadwrapper.html#ThreadState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.ThreadState" title="Permalink to this definition">¶</a></dt>
 <dd><p>State in which a thread can be in.</p>
-<dl class="attribute">
-<dt id="pypette.ThreadState.FAILED">
-<code class="descname">FAILED</code><em class="property"> = 1</em><a class="headerlink" href="#pypette.ThreadState.FAILED" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pypette.ThreadState.FAILED">
+<span class="sig-name descname"><span class="pre">FAILED</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#pypette.ThreadState.FAILED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="pypette.ThreadState.INIT">
-<code class="descname">INIT</code><em class="property"> = 2</em><a class="headerlink" href="#pypette.ThreadState.INIT" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pypette.ThreadState.INIT">
+<span class="sig-name descname"><span class="pre">INIT</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#pypette.ThreadState.INIT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="pypette.ThreadState.RUNNING">
-<code class="descname">RUNNING</code><em class="property"> = 3</em><a class="headerlink" href="#pypette.ThreadState.RUNNING" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pypette.ThreadState.RUNNING">
+<span class="sig-name descname"><span class="pre">RUNNING</span></span><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#pypette.ThreadState.RUNNING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="pypette.ThreadState.SUCCESS">
-<code class="descname">SUCCESS</code><em class="property"> = 4</em><a class="headerlink" href="#pypette.ThreadState.SUCCESS" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pypette.ThreadState.SUCCESS">
+<span class="sig-name descname"><span class="pre">SUCCESS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#pypette.ThreadState.SUCCESS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="threadwrapper-object">
+</section>
+<section id="threadwrapper-object">
 <h1>ThreadWrapper Object<a class="headerlink" href="#threadwrapper-object" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pypette.ThreadWrapper">
-<em class="property">class </em><code class="descclassname">pypette.</code><code class="descname">ThreadWrapper</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/threadwrapper.html#ThreadWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.ThreadWrapper" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="pypette.ThreadWrapper">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pypette.</span></span><span class="sig-name descname"><span class="pre">ThreadWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/threadwrapper.html#ThreadWrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.ThreadWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper around a thread to allow for exception handling and safe
 job execution.</p>
-<dl class="attribute">
-<dt id="pypette.ThreadWrapper.exception">
-<code class="descname">exception</code><a class="headerlink" href="#pypette.ThreadWrapper.exception" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pypette.ThreadWrapper.exception">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">exception</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[Exception]</span></em><a class="headerlink" href="#pypette.ThreadWrapper.exception" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exception thrown by thread if any.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="pypette.ThreadWrapper.job">
-<code class="descname">job</code><a class="headerlink" href="#pypette.ThreadWrapper.job" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pypette.ThreadWrapper.job">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">job</span></span><em class="property"><span class="pre">:</span> <span class="pre">Any</span></em><a class="headerlink" href="#pypette.ThreadWrapper.job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Job being run by the thread.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pypette.ThreadWrapper.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypette/threadwrapper.html#ThreadWrapper.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypette.ThreadWrapper.run" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="pypette.ThreadWrapper.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pypette/threadwrapper.html#ThreadWrapper.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pypette.ThreadWrapper.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the thread in an exception free way.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="pypette.ThreadWrapper.state">
-<code class="descname">state</code><a class="headerlink" href="#pypette.ThreadWrapper.state" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pypette.ThreadWrapper.state">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="pre">:</span> <span class="pre">pypette.threadwrapper.ThreadState</span></em><a class="headerlink" href="#pypette.ThreadWrapper.state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Thread’s current state.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
+          
         </div>
       </div>
     <div class="clearer"></div>
@@ -280,8 +271,8 @@ job execution.</p>
       &copy;2018, Vishwas B Sharma.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/api.rst.txt"

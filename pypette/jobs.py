@@ -12,76 +12,82 @@ describe python methods in a structured way.
 """
 
 from inspect import isroutine
+from typing import Any, Callable, Dict, List, Tuple, Union
 
 
-class JobInterface(object):
+class JobInterface:
     """Pipeline job interface."""
 
-    def __init__(self, name):
+    def __init__(self, name: str) -> None:
         """Constructor.
 
         :param name: Name of the job.
-        :type: str
         """
-        self.name = name
+        self.name: str = name
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         raise Exception
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         raise Exception
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__repr__()
 
 
 class Job(JobInterface):
     """Class to format python methods as pipeline jobs."""
 
-    def __init__(self, function, args=(), kwargs={}):
+    def __init__(
+        self,
+        function: Callable[..., Any],
+        args: Union[Tuple, Tuple[Any]] = (),
+        kwargs: Union[Dict, Dict[Any, Any]] = {},
+    ) -> None:
         """Constructor.
 
         :param function: Python method to run.
-        :type function: routine
         :param args: Argument list to run the method with.
-        :type args: tuple
         :param kwargs: Keyword arguments to run the method with.
-        :type kwargs: dict
         """
         assert isroutine(function), 'Python callable expected'
         assert isinstance(args, tuple)
         assert isinstance(kwargs, dict)
 
         super(Job, self).__init__(function.__name__)
-        self.function = function
-        self.args = args
-        self.kwargs = kwargs
+        self.function: Callable[..., Any] = function
+        self.args: Union[Tuple, Tuple[Any]] = args
+        self.kwargs: Union[Dict, Dict[Any, Any]] = kwargs
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         # Note that same method run with two different sets of parameters is
         # considered to be two different jobs and not one job.
-        return self.function == other.function and self.args == other.args and self.kwargs == other.kwargs
+        return (
+            type(self) == type(other)
+            and self.function == other.function
+            and self.args == other.args
+            and self.kwargs == other.kwargs
+        )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Job(function={}, args={}, kwargs={})'.format(self.name, self.args, self.kwargs)
 
 
 class BashJob(JobInterface):
     """Class to format bash commands as pipeline jobs."""
 
-    def __init__(self, cmd):
+    def __init__(self, cmd: List[str]):
         """Constructor.
 
         :param cmd: Bash command to run.
-        :type cmd: list
         """
         assert isinstance(cmd, list), 'Bash command as list of strings needed'
 
         super(BashJob, self).__init__(' '.join(cmd))
-        self.cmd = cmd
+        self.cmd: List[str] = cmd
 
-    def __eq__(self, other):
-        return self.cmd == other.cmd
+    def __eq__(self, other: Any) -> bool:
+        return type(self) == type(other) and self.cmd == other.cmd
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'BashJob(cmd={})'.format(self.name)

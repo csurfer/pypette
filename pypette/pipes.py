@@ -18,57 +18,48 @@ blocks.
 import logging
 from collections import OrderedDict
 from enum import Enum
-from functools import partial
 from itertools import chain
+from typing import Any, Dict, List, Union
 from uuid import uuid4
 
 import crayons
 
-from .jobs import JobInterface
+from .jobs import BashJob, Job, JobInterface
 from .threadwrapper import ThreadState, ThreadWrapper
 
 
 class Gate(Enum):
     """Different kinds of gating allowed for pipes."""
 
-    def __fail_fast():
-        return False
-
     # Fails at the first error or exception thrown from a job. (Default)
-    FAIL_FAST = partial(__fail_fast)
-
-    def __execute_all():
-        return True
-
+    FAIL_FAST = 0
     # Silently captures the error or exception to execute all the jobs.
-    EXECUTE_ALL = partial(__execute_all)
+    EXECUTE_ALL = 1
 
 
-class Pipe(object):
+class Pipe:
     """Class to define the pipeline structure."""
 
-    def __init__(self, name, gate=Gate.FAIL_FAST):
+    def __init__(self, name: str, gate: Gate = Gate.FAIL_FAST):
         """Constructor.
 
         :param name: Name given to the pipe object for identification.
-        :type name: str
+        :param gate: Mode you want the pipe to run in (FAIL_FAST/EXECUTE_ALL)
         """
-        self.name = 'Pipe({})'.format(name)
-        self.job_map = OrderedDict()
-        self.thread_map = OrderedDict()
-        self.gate = gate.value
-        self.dependent_on = []
+        self.name: str = 'Pipe({})'.format(name)
+        self.job_map: Dict[Any, Any] = OrderedDict()
+        self.thread_map: Dict[Any, Any] = OrderedDict()
+        self.gate: Gate = gate
+        self.dependent_on: List[Job] = []
 
-    def add_jobs(self, jobs, run_in_parallel=False):
+    def add_jobs(self, jobs: List[Union[Job, BashJob, 'Pipe']], run_in_parallel: bool = False):
         """Method to add jobs to pipeline.
 
         :param jobs: List of jobs/pipes to run.
-        :type jobs: list
         :param run_in_parallel: This flag when set to False(default) runs the
                                 list of jobs given one after another. This flag
                                 if set to True runs the jobs/pipes submitted in
                                 parallel threads.
-        :type run_in_parallel: boolean
         """
 
         # Return if nothing to do.
@@ -157,21 +148,21 @@ class Pipe(object):
                 prev = prev and (job.state == ThreadState.SUCCESS)
                 if not prev:
                     broken = True
-                prev = prev or self.gate()
+                prev = prev or (self.gate == Gate.EXECUTE_ALL)
 
         if prev and not broken:
             self.state = ThreadState.SUCCESS
         else:
             self.state = ThreadState.FAILED
 
-    def graph(self):
+    def graph(self) -> None:
         """Method to print the structure of the pipeline."""
         logging.debug('graph() method called on {}'.format(self.name))
         self._pretty_print()
         print('')
 
     @staticmethod
-    def _cstate(tw):
+    def _cstate(tw) -> str:
         """Returns state in colour for pretty printing reports."""
         if isinstance(tw, ThreadWrapper):
             if tw.state == ThreadState.SUCCESS:
@@ -188,7 +179,7 @@ class Pipe(object):
             else:
                 return str(crayons.yellow(tw))
 
-    def report(self):
+    def report(self) -> None:
         """Method to pretty print the report."""
         print('')
         print(crayons.green(self.name, bold=True))
@@ -207,8 +198,8 @@ class Pipe(object):
                     pre = u'  '
                 else:
                     pre = u'| '
-                l1 = [u'-' * 10 for j in jobs]
-                l1 = u''.join(l1)
+                l1_list: List[str] = [u'-' * 10 for j in jobs]
+                l1: str = u''.join(l1_list)
                 l1 = l1[:-1]
                 print(crayons.blue(u'\u21E8 ') + crayons.blue(l1))
                 fmt = u'{0:^{wid}}'
@@ -223,7 +214,7 @@ class Pipe(object):
             item.job.report()
 
     @staticmethod
-    def _validate(jobs):
+    def _validate(jobs) -> None:
         """Method to validate the jobs submitted to pipeline.
 
         :param jobs: List of jobs submitted.
@@ -235,27 +226,25 @@ class Pipe(object):
                 logging.error('Pipeline jobs should be of type Job, BashJob or Pipe')
                 raise AssertionError('Invalid type {} submitted'.format(type(job)))
 
-    def _add_in_parallel(self, jobs):
+    def _add_in_parallel(self, jobs: List[Union[Job, BashJob, 'Pipe']]) -> None:
         """Method to add jobs to pipeline so that they run in parallel.
 
         :param jobs: List of jobs submitted.
-        :type jobs: list
         """
         self.job_map[uuid4()] = jobs
         logging.debug('{} submitted to be run in parallel'.format(jobs))
 
-    def _add_in_series(self, jobs):
+    def _add_in_series(self, jobs: List[Union[Job, BashJob, 'Pipe']]) -> None:
         """Method to add jobs to pipeline so that they run one after another,
         only after the previous job completes.
 
         :param jobs: List of jobs submitted.
-        :type jobs: list
         """
         for job in jobs:
             self.job_map[uuid4()] = [job]
             logging.debug('{} submitted to be run in series'.format(job))
 
-    def _pretty_print(self):
+    def _pretty_print(self) -> None:
         """Method to pretty print the pipeline."""
         print('')
         print(crayons.green(self.name, bold=True))
@@ -274,8 +263,8 @@ class Pipe(object):
                     pre = u'  '
                 else:
                     pre = u'| '
-                l1 = [u'-' * (len(j.name) + 2) for j in jobs]
-                l1 = u''.join(l1)
+                l1_list: List[str] = [u'-' * (len(j.name) + 2) for j in jobs]
+                l1: str = u''.join(l1_list)
                 l1 = l1[: -len(jobs[-1].name) // 2 + 1]
                 print(crayons.blue(u'\u21E8 ') + crayons.blue(l1))
                 fmt = u'{0:^{wid}}'
@@ -289,8 +278,8 @@ class Pipe(object):
         for item in pipes:
             item._pretty_print()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.name
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__repr__()
