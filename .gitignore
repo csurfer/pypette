@@ -5,3 +5,4 @@ pypette/*.pyc
 dist/
 *.egg
 *.egg-info/
+.tox/

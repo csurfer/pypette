@@ -45,7 +45,7 @@ from time import sleep
 from pypette import BashJob, Job, Pipe
 
 
-def print_job(message):
+def print_job(message: str) -> None:
     """Sample method which takes a message to print."""
     print(threading.currentThread().getName(), 'Starting')
     sleep(1)
@@ -53,7 +53,7 @@ def print_job(message):
     print(threading.currentThread().getName(), 'Ending')
 
 
-def print_corrupt(message):
+def print_corrupt(message: str) -> None:
     print(threading.currentThread().getName(), 'Starting')
     sleep(1)
     print('From within print_corrupt : ' + str(message))

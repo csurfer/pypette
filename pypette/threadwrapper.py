@@ -9,6 +9,7 @@ Class definitions to create wrapper threads for jobs.
 import subprocess
 from enum import Enum
 from threading import Thread
+from typing import Any, Optional
 
 from .jobs import BashJob, Job
 
@@ -34,13 +35,12 @@ class ThreadWrapper(Thread):
     """Wrapper around a thread to allow for exception handling and safe
     job execution."""
 
-    def __init__(self, job):
+    def __init__(self, job: Any) -> None:
         """Constructor.
 
         :param job: Job to run.
-        :type: JobInterface or Pipe.
         """
-        self._job = job
+        self._job: Any = job
         if isinstance(job, Job):
             self._jobtype = JobTypes.JOB
             super(ThreadWrapper, self).__init__(target=job.function, args=job.args, kwargs=job.kwargs)
@@ -55,9 +55,9 @@ class ThreadWrapper(Thread):
             super(ThreadWrapper, self).__init__(target=job.run)
 
         self._state = ThreadState.INIT
-        self._exception = None
+        self._exception: Optional[Exception] = None
 
-    def run(self):
+    def run(self) -> None:
         """Runs the thread in an exception free way."""
         try:
             self._state = ThreadState.RUNNING
@@ -71,16 +71,16 @@ class ThreadWrapper(Thread):
             self._exception = e
 
     @property
-    def job(self):
+    def job(self) -> Any:
         """Job being run by the thread."""
         return self._job
 
     @property
-    def state(self):
+    def state(self) -> ThreadState:
         """Thread's current state."""
         return self._state
 
     @property
-    def exception(self):
+    def exception(self) -> Optional[Exception]:
         """Exception thrown by thread if any."""
         return self._exception
