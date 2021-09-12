@@ -1,9 +1,26 @@
 [tool.poetry]
 name = "pypette"
-version = "0.0.10"
+version = "0.0.12"
 description = "pypette (to be read as pipette) is a module which makes building pipelines ridiculously simple, allowing users to control the flow with minimal instructions."
 authors = ["csurfer <sharma.vishwas88@gmail.com>"]
 license = "MIT"
+readme = "README.rst"
+homepage = "https://csurfer.github.io/pypette"
+repository = "https://github.com/csurfer/pypette"
+keywords = ["pipeline", "dev-tool", "threads", "multithreading", "python"]
+classifiers=[
+    'Intended Audience :: Developers',
+    'Intended Audience :: Education',
+    'License :: OSI Approved :: MIT License',
+    'Development Status :: 3 - Alpha',
+    'Operating System :: POSIX',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Topic :: Software Development :: Build Tools',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+]
 
 [tool.poetry.dependencies]
 python = "^3.6"

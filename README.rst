@@ -220,8 +220,8 @@ If you found the utility helpful you can buy me a cup of coffee using
    :target: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3BSBW7D45C4YN&lc=US&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 
 .. _issue tracker: https://github.com/csurfer/pypette/issues
-.. _examples/basic.py: https://github.com/csurfer/pypette/examples/basic.py
-.. _examples: https://github.com/csurfer/pypette/examples
+.. _examples/basic.py: https://github.com/csurfer/pypette/tree/master/examples/basic.py
+.. _examples: https://github.com/csurfer/pypette/tree/master/examples
 
 .. |Viz| image:: https://i.imgur.com/1PaPlD3.png
    :width: 200px
