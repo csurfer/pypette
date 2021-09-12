@@ -3,9 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6
-      - image: circleci/python:3.7
-      - image: circleci/python:3.8
-      - image: circleci/python:3.9
     steps:
       - checkout
       - run:
@@ -15,4 +12,16 @@ jobs:
             poetry install
       - run:
           command: |
-            poetry run tox
+            poetry run tox -e 3.6
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          command: |
+            sudo pip install --upgrade pip
+            sudo pip install poetry
+            poetry install
+      - run:
+          command: |
+            poetry run tox -e 3.7
