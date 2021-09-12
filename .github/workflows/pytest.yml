@@ -23,7 +23,15 @@ jobs:
       - name: Lint with pre-commit
         run: |
           pre-commit run --all-files
-      - name: Test
+      - name: Testing on python ${{ matrix.python-version }}
         run: |
           poetry install
-          poetry run tox -e ${{ matrix.python-version }}
+          if ${{ matrix.python-version }} == 3.6; then
+            poetry run tox -e py36
+          else if ${{ matrix.python-version }} == 3.7; then
+            poetry run tox -e py37
+          else if ${{ matrix.python-version }} == 3.8; then
+            poetry run tox -e py38
+          else if ${{ matrix.python-version }} == 3.9; then
+            poetry run tox -e py39
+          fi
