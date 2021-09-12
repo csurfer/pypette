@@ -28,8 +28,3 @@ jobs:
         run: pre-commit run --all-files
       - name: Testing on python ${{ matrix.python-version }} with tox
         run: tox -e py
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: pytest-results-${{ matrix.python-version }}
-          path: htmlcov/
