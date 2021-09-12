@@ -12,7 +12,7 @@ jobs:
             poetry install
       - run:
           command: |
-            poetry run tox -e 3.6
+            poetry run tox -e py36
   test_37:
     docker:
       - image: circleci/python:3.7
@@ -25,4 +25,4 @@ jobs:
             poetry install
       - run:
           command: |
-            poetry run tox -e 3.7
+            poetry run tox -e py37
