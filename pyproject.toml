@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pypette"
-version = "0.0.9"
+version = "0.0.10"
 description = "pypette (to be read as pipette) is a module which makes building pipelines ridiculously simple, allowing users to control the flow with minimal instructions."
 authors = ["csurfer <sharma.vishwas88@gmail.com>"]
 license = "MIT"

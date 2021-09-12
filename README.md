@@ -13,25 +13,15 @@
             src="https://img.shields.io/pypi/pyversions/pypette.svg"
             alt="pyv">
     </a>
-    <a href="https://travis-ci.org/csurfer/pypette">
+    <a href="https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master">
         <img
-            src="https://travis-ci.org/csurfer/pypette.svg?branch=master"
+            src="https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master"
             alt="Build Status">
-    </a>
-    <a href='https://coveralls.io/github/csurfer/pypette?branch=master'>
-        <img
-            src='https://coveralls.io/repos/github/csurfer/pypette/badge.svg?branch=master'
-            alt='Coverage Status' />
     </a>
     <a href="https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE">
         <img
             src="https://img.shields.io/badge/license-MIT-blue.svg"
             alt="License">
-    </a>
-    <a href="https://saythanks.io/to/csurfer">
-        <img
-            src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg"
-            alt="Thanks">
     </a>
 </p>
 
@@ -212,17 +202,16 @@ reporting bugs or feature requests.
 
 ### Development
 
-Pull requests are most welcome. Kindly follow the steps suggested below:
-
 1. Checkout the repository.
 2. Make your changes and add/update relavent tests.
-3. Install `poetry` using `pip install poetry`.
-4. Run `poetry install` to create project's virtual environment.
-5. Run tests using `poetry run tox` (Any python versions which you don't have checked out will fail this). Fix failing tests and repeat.
+3. Install **`poetry`** using **`pip install poetry`**.
+4. Run **`poetry install`** to create project's virtual environment.
+5. Run tests using **`poetry run tox`** (Any python versions which you don't have checked out will fail this). Fix failing tests and repeat.
 6. Make documentation changes that are relavant.
-7. Install `pre-commit` using `pip install pre-commit` and run `pre-commit run --all-files` to do lint checks.
-8. Generate documentation using `poetry run sphinx-build -b html docs/ docs/_build/html`.
-9. Commit the changes and raise a pull request.
+7. Install **`pre-commit`** using **`pip install pre-commit`** and run **`pre-commit run --all-files`** to do lint checks.
+8. Generate documentation using **`poetry run sphinx-build -b html docs/ docs/_build/html`**.
+9. Generate **`requirements.txt`** for automated testing using **`poetry export --dev --without-hashes -f requirements.txt > requirements.txt`**.
+10. Commit the changes and raise a pull request.
 
 ### Buy the developer a cup of coffee!
 
