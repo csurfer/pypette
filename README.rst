@@ -1,6 +1,6 @@
 |Logo|
 
-|pypiv| |pyv| |Build| |Coverage| |Licence| |Thanks|
+|pypiv| |pyv| |Build| |Licence|
 
 --------------
 
@@ -191,7 +191,18 @@ Please use `issue tracker`_ for reporting bugs or feature requests.
 Development
 ~~~~~~~~~~~
 
-Pull requests are most welcome.
+Pull requests are most welcome. Kindly follow the steps suggested below:
+
+1. Checkout the repository.
+2. Make your changes and add/update relavent tests.
+3. Install **`poetry`** using **`pip install poetry`**.
+4. Run **`poetry install`** to create project's virtual environment.
+5. Run tests using **`poetry run tox`** (Any python versions which you don't have checked out will fail this). Fix failing tests and repeat.
+6. Make documentation changes that are relavant.
+7. Install **`pre-commit`** using **`pip install pre-commit`** and run **`pre-commit run --all-files`** to do lint checks.
+8. Generate documentation using **`poetry run sphinx-build -b html docs/ docs/_build/html`**.
+9. Generate **`requirements.txt`** for automated testing using **`poetry export --dev --without-hashes -f requirements.txt > requirements.txt`**.
+10. Commit the changes and raise a pull request.
 
 
 Buy the developer a cup of coffee!
@@ -208,12 +219,9 @@ If you found the utility helpful you can buy me a cup of coffee using
 .. |Donate| image:: https://www.paypalobjects.com/webstatic/en_US/i/btn/png/silver-pill-paypal-44px.png
    :target: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3BSBW7D45C4YN&lc=US&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 
-.. |Thanks| image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg
-   :target: https://saythanks.io/to/csurfer
-
 .. _issue tracker: https://github.com/csurfer/pypette/issues
-.. _examples/basic.py: https://github.com/csurfer/pypette/examples/basic.py
-.. _examples: https://github.com/csurfer/pypette/examples
+.. _examples/basic.py: https://github.com/csurfer/pypette/tree/master/examples/basic.py
+.. _examples: https://github.com/csurfer/pypette/tree/master/examples
 
 .. |Viz| image:: https://i.imgur.com/1PaPlD3.png
    :width: 200px
@@ -221,11 +229,8 @@ If you found the utility helpful you can buy me a cup of coffee using
 .. |Licence| image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE
 
-.. |Build| image:: https://travis-ci.org/csurfer/pypette.svg?branch=master
-   :target: https://travis-ci.org/csurfer/pypette
-
-.. |Coverage| image:: https://coveralls.io/repos/github/csurfer/pypette/badge.svg?branch=master
-   :target: https://coveralls.io/github/csurfer/pypette?branch=master
+.. |Build| image:: https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master
+   :target: https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master
 
 .. |pypiv| image:: https://img.shields.io/pypi/v/pypette.svg
    :target: https://pypi.python.org/pypi/pypette
