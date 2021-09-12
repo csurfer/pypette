@@ -1,28 +1,28 @@
-version: 2.1
+version: 2.0
 jobs:
-  test_36:
+  poetry:
+    steps:
+      - checkout
+      - run:
+          command: |
+            sudo pip install --upgrade pip
+            sudo pip install poetry
+            poetry install
+  build:
+    docker:
+      - image: circleci/python:3.9
+  build_36:
     docker:
       - image: circleci/python:3.6
+  test_36:
     steps:
-      - checkout
       - run:
-          command: |
-            sudo pip install --upgrade pip
-            sudo pip install poetry
-            poetry install
-      - run:
-          command: |
-            poetry run tox -e py36
-  test_37:
-    docker:
-      - image: circleci/python:3.7
-    steps:
-      - checkout
-      - run:
-          command: |
-            sudo pip install --upgrade pip
-            sudo pip install poetry
-            poetry install
-      - run:
-          command: |
-            poetry run tox -e py37
+          command: poetry run tox -e py36
+
+workflow:
+  version: 2.0
+  jobs:
+    test_36:
+      requires:
+        build_36
+        poetry
