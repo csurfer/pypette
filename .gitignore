@@ -6,3 +6,5 @@ dist/
 *.egg
 *.egg-info/
 .tox/
+.coverage
+htmlcov/

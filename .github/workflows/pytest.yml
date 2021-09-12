@@ -23,8 +23,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install pre-commit
           pip install -r requirements.txt
-          pip install tox pytest tox-gh-actions
+          pip install tox pytest
       - name: Lint with pre-commit
         run: pre-commit run --all-files
       - name: Testing on python ${{ matrix.python-version }} with tox
-        run: tox
+        run: tox -e py
