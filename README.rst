@@ -1,6 +1,6 @@
 |Logo|
 
-|pypiv| |pyv| |Build| |Licence|
+|pypiv| |pyv| |Build| |Coverage| |Licence|
 
 --------------
 
@@ -230,7 +230,10 @@ If you found the utility helpful you can buy me a cup of coffee using
    :target: https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE
 
 .. |Build| image:: https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master
-   :target: https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master
+   :target: https://github.com/csurfer/pypette/actions
+
+.. |Coverage| image:: https://codecov.io/gh/csurfer/pypette/branch/master/graph/badge.svg?token=bzBkxPdbly
+   :target: https://codecov.io/gh/csurfer/pypette
 
 .. |pypiv| image:: https://img.shields.io/pypi/v/pypette.svg
    :target: https://pypi.python.org/pypi/pypette

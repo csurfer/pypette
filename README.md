@@ -13,10 +13,15 @@
             src="https://img.shields.io/pypi/pyversions/pypette.svg"
             alt="pyv">
     </a>
-    <a href="https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master">
+    <a href="https://github.com/csurfer/pypette/actions">
         <img
             src="https://github.com/csurfer/pypette/actions/workflows/pytest.yml/badge.svg?branch=master"
             alt="Build Status">
+    </a>
+    <a href="https://codecov.io/gh/csurfer/pypette">
+        <img
+            src="https://codecov.io/gh/csurfer/pypette/branch/master/graph/badge.svg?token=bzBkxPdbly"
+            alt="Coverage Status">
     </a>
     <a href="https://raw.githubusercontent.com/csurfer/pypette/master/LICENSE">
         <img
