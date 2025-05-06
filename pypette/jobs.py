@@ -50,7 +50,7 @@ class Job(JobInterface):
         :param args: Argument list to run the method with.
         :param kwargs: Keyword arguments to run the method with.
         """
-        assert isroutine(function), 'Python callable expected'
+        assert isroutine(function), "Python callable expected"
         assert isinstance(args, tuple)
         assert isinstance(kwargs, dict)
 
@@ -70,7 +70,9 @@ class Job(JobInterface):
         )
 
     def __repr__(self) -> str:
-        return 'Job(function={}, args={}, kwargs={})'.format(self.name, self.args, self.kwargs)
+        return "Job(function={}, args={}, kwargs={})".format(
+            self.name, self.args, self.kwargs
+        )
 
 
 class BashJob(JobInterface):
@@ -81,13 +83,15 @@ class BashJob(JobInterface):
 
         :param cmd: Bash command to run.
         """
-        assert isinstance(cmd, list), 'Bash command as list of strings needed'
+        if not isinstance(cmd, list):
+            raise TypeError("Bash command as list of strings needed")
 
-        super(BashJob, self).__init__(' '.join(cmd))
+        super().__init__(" ".join(cmd))
         self.cmd: List[str] = cmd
 
     def __eq__(self, other: Any) -> bool:
-        return type(self) == type(other) and self.cmd == other.cmd
+        # Use isinstance for subclass safety and faster path
+        return isinstance(other, BashJob) and self.cmd == other.cmd
 
     def __repr__(self) -> str:
-        return 'BashJob(cmd={})'.format(self.name)
+        return "BashJob(cmd={})".format(self.name)
