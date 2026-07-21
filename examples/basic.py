@@ -47,17 +47,17 @@ from pypette import BashJob, Job, Pipe
 
 def print_job(message: str) -> None:
     """Sample method which takes a message to print."""
-    print(threading.currentThread().getName(), 'Starting')
+    print(threading.current_thread().getName(), 'Starting')
     sleep(1)
     print('From within print_job : ' + str(message))
-    print(threading.currentThread().getName(), 'Ending')
+    print(threading.current_thread().getName(), 'Ending')
 
 
 def print_corrupt(message: str) -> None:
-    print(threading.currentThread().getName(), 'Starting')
+    print(threading.current_thread().getName(), 'Starting')
     sleep(1)
     print('From within print_corrupt : ' + str(message))
-    print(threading.currentThread().getName(), 'Ending')
+    print(threading.current_thread().getName(), 'Ending')
     raise Exception('lal')
 
 
